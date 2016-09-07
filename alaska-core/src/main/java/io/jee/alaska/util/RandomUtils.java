@@ -4,6 +4,7 @@ import java.util.Random;
 
 import org.apache.commons.lang3.StringUtils;
 
+@Deprecated
 public class RandomUtils {
 	
 	public final static String ALL = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
