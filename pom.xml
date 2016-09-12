@@ -47,6 +47,7 @@
 	<modules>
 		<module>alaska-core</module>
 		<module>alaska-sso</module>
+		<module>alaska-alibaba</module>
 	</modules>
 	<dependencies>
 		<dependency>

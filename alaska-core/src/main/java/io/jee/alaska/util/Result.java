@@ -55,6 +55,10 @@ public class Result<T> implements Serializable {
 	public static <T> Result<T> code(Integer code, String message, T data){
 		return new Result<T>(null, code, message, data, null);
 	}
+	
+	public static <T> Result<T> result(boolean success, String message){
+		return new Result<T>(success, null, message, null, null);
+	}
 
 	public Result(Boolean success, Integer code, String message, T data, Map<String, String> errorFields) {
 		this.success = success;
@@ -104,4 +108,10 @@ public class Result<T> implements Serializable {
 		this.errorFields = errorFields;
 	}
 
+	@Override
+	public String toString() {
+		return "Result [success=" + success + ", code=" + code + ", message=" + message + ", data=" + data
+				+ ", errorFields=" + errorFields + "]";
+	}
+	
 }
