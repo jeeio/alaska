@@ -10,7 +10,6 @@ import com.taobao.api.TaobaoClient;
 import com.taobao.api.request.AlibabaAliqinFcSmsNumSendRequest;
 import com.taobao.api.response.AlibabaAliqinFcSmsNumSendResponse;
 
-import io.jee.alaska.sms.ShortMessagingHandler;
 import io.jee.alaska.util.Result;
 
 public class AlidayuShortMessagingHandler implements ShortMessagingHandler {
