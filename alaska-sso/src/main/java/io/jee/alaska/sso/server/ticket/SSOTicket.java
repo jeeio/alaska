@@ -1,6 +1,7 @@
 package io.jee.alaska.sso.server.ticket;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -16,6 +17,7 @@ public class SSOTicket {
 
 	@Id
 	@GenericGenerator(name="uuid", strategy="uuid")
+	@GeneratedValue(generator="uuid")
 	public String getTicket() {
 		return ticket;
 	}
