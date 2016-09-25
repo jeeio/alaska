@@ -31,7 +31,7 @@ public class FirewallServiceImpl implements FirewallService {
 			
 			@Override
 			public Predicate toPredicate(Root<FirewallActionCount> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-				return query.where(cb.equal(root.get("keyword"), "keyword"), cb.gt(root.get("time"), time), cb.equal(root.get("type"), type)).getRestriction();
+				return query.where(cb.equal(root.get("keyword"), keyword), cb.gt(root.get("time"), time), cb.equal(root.get("type"), type)).getRestriction();
 			}
 		});
 		return size<count;
@@ -56,7 +56,7 @@ public class FirewallServiceImpl implements FirewallService {
 	@Override
 	public void addTempStorage(String key, String content, long expireMillis) {
 		FirewallTempStorage firewallTempStorage = new FirewallTempStorage();
-		firewallTempStorage.setKey(key);
+		firewallTempStorage.setKeyword(key);
 		firewallTempStorage.setContent(content);
 		firewallTempStorage.setExpire(System.currentTimeMillis()+expireMillis);
 		tempStorageDao.save(firewallTempStorage);

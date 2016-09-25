@@ -1,24 +1,22 @@
 package io.jee.alaska.firewall.spring.jpa;
 
-import java.util.concurrent.TimeUnit;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
 public class FirewallTempStorage {
 
-	private String key;
+	private String keyword;
 	private String content;
 	private long expire;
-
+	
 	@Id
-	public String getKey() {
-		return key;
+	public String getKeyword() {
+		return keyword;
 	}
 
-	public void setKey(String key) {
-		this.key = key;
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
 	}
 
 	public String getContent() {
@@ -37,9 +35,4 @@ public class FirewallTempStorage {
 		this.expire = expire;
 	}
 	
-	public static void main(String[] args) {
-		System.out.println(TimeUnit.MINUTES.toMillis(1));
-		
-	}
-
 }
