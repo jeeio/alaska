@@ -76,6 +76,11 @@ public class FirewallServiceImpl implements FirewallService {
 		}
 		return null;
 	}
+	
+	@Override
+	public void removeTempStorage(FirewallTempStorage tempStorage) {
+		tempStorageDao.delete(tempStorage);
+	}
 
 	@Override
 	public void clearTempStorage() {

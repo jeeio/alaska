@@ -25,6 +25,8 @@ public interface FirewallService {
 	
 	FirewallTempStorage getTempStorage(String key);
 	
+	void removeTempStorage(FirewallTempStorage tempStorage);
+	
 	void clearTempStorage();
 
 }
