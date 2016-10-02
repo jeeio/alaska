@@ -3,6 +3,7 @@ package io.jee.alaska.spring.jpa;
 import java.io.Serializable;
 
 import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
 
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
@@ -19,6 +20,11 @@ public class SimpleAlaskaRepository<T, ID extends Serializable> extends SimpleJp
 		super(entityInformation, entityManager);
 		this.entityManager = entityManager;
 		domainClass = entityInformation.getJavaType();
+	}
+	
+	@Override
+	public T findOne(ID id, LockModeType lockMode) {
+		return entityManager.find(domainClass, id, lockMode);
 	}
 
 	@Override

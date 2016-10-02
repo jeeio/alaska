@@ -8,7 +8,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -85,6 +87,18 @@ public class FirewallServiceImpl implements FirewallService {
 	@Override
 	public void clearTempStorage() {
 		tempStorageDao.deleteByTimeLessThan(System.currentTimeMillis());
+	}
+	
+	@Service
+	@Profile("master")
+	public class ClearFirewallService{
+		
+		@Scheduled(fixedRate=60*1000*5)
+		public void clear(){
+			clearActionCount();
+			clearTempStorage();
+		}
+		
 	}
 
 }

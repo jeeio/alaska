@@ -3,12 +3,16 @@ package io.jee.alaska.sso.server.ticket;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import io.jee.alaska.sso.TicketVerify;
 import io.jee.alaska.sso.server.TicketService;
 
 @Service
+@Transactional
 public class JpaTicketService implements TicketService {
 	
 	protected final Log logger = LogFactory.getLog(getClass());
@@ -42,6 +46,17 @@ public class JpaTicketService implements TicketService {
 	@Override
 	public void clear() {
 		ssoTicketRepository.deleteByTimeLessThan(System.currentTimeMillis()-100000);
+	}
+	
+	@Service
+	@Profile("master")
+	public class ClearTicketService{
+		
+		@Scheduled(fixedRate=60*1000*5)
+		public void clear(){
+			JpaTicketService.this.clear();
+		}
+		
 	}
 	
 }
