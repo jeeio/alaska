@@ -16,7 +16,7 @@ public class SSOTicket {
 	private long time;
 
 	@Id
-	@GenericGenerator(name="uuid", strategy="uuid")
+	@GenericGenerator(name="uuid", strategy="org.hibernate.id.UUIDHexGenerator")
 	@GeneratedValue(generator="uuid")
 	public String getTicket() {
 		return ticket;
