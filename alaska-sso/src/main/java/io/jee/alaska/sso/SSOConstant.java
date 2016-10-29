@@ -4,6 +4,8 @@ public class SSOConstant {
 	
 	public static String REMEBER_COOKIE_NAME = "sso-info";
 	
+	public static String COOKIE_KEY = "aiyoye";
+	
 	public static String SSO_CHECK_URL = "/alaska_security_check";
 	public static String SSO_SYNC_URL = "/alaska_security_sync";
 	
