@@ -13,6 +13,8 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -41,6 +43,8 @@ import io.jee.alaska.sso.SSOProperties;
 import io.jee.alaska.sso.TicketVerify;
 
 public class JeeAuthenticationProvider implements AuthenticationProvider, InitializingBean, DisposableBean {
+	
+	protected final Log logger = LogFactory.getLog(getClass());
 	
 	private UserDetailsService userDetailsService;
 	
@@ -86,6 +90,7 @@ public class JeeAuthenticationProvider implements AuthenticationProvider, Initia
 				throw new AuthenticationCredentialsNotFoundException("令牌错误");
 			}
 		}catch(IOException e){
+			logger.error("令牌错了", e);
 			throw new BadCredentialsException(e.getMessage(), e);
 		}
 		
