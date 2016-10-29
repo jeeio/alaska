@@ -33,7 +33,7 @@ public class JeeExceptionTranslationFilter extends ExceptionTranslationFilter {
     			response.sendRedirect(redirectUrl);
     		}
     	}else{
-    		chain.doFilter(request, response);
+    		super.doFilter(request, response, chain);
     	}
 	}
 

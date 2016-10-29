@@ -1,9 +1,5 @@
 package io.jee.alaska.firewall;
 
-import java.util.concurrent.TimeUnit;
-
-import io.jee.alaska.firewall.spring.jpa.FirewallTempStorage;
-
 public interface FirewallService {
 	
 	/**
@@ -19,14 +15,4 @@ public interface FirewallService {
 	
 	void clearActionCount();
 	
-	void addTempStorage(String key, String content, long millisecond);
-	
-	void addTempStorage(String key, String content, TimeUnit timeUnit, long duration);
-	
-	FirewallTempStorage getTempStorage(String key);
-	
-	void removeTempStorage(FirewallTempStorage tempStorage);
-	
-	void clearTempStorage();
-
 }

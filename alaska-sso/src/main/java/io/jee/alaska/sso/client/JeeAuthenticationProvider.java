@@ -25,7 +25,6 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -38,20 +37,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.jee.alaska.sso.SSOConstant;
+import io.jee.alaska.sso.SSOProperties;
 import io.jee.alaska.sso.TicketVerify;
 
 public class JeeAuthenticationProvider implements AuthenticationProvider, InitializingBean, DisposableBean {
 	
 	private UserDetailsService userDetailsService;
 	
-	private Environment env;
+	@Resource
+	private SSOProperties ssoProperties;
 	
 	private CloseableHttpClient httpClient = null;
-	
-	@Resource
-	public void setEnv(Environment env) {
-		this.env = env;
-	}
 	
 	@Override
 	public Authentication authenticate(Authentication authentication)
@@ -69,7 +65,7 @@ public class JeeAuthenticationProvider implements AuthenticationProvider, Initia
 			List<NameValuePair> parameters = new ArrayList<>();
 			parameters.add(new BasicNameValuePair("ticket", ticket));
 			
-			StringBuffer validationUrl = new StringBuffer(env.getRequiredProperty("member.url"));
+			StringBuffer validationUrl = new StringBuffer(ssoProperties.getUrl());
 			validationUrl.append(SSOConstant.SSO_VERIFY_URL);
 			
 			HttpPost httpPost = new HttpPost(validationUrl.toString());

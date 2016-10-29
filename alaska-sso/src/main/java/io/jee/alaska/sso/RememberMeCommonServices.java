@@ -24,9 +24,13 @@ public class RememberMeCommonServices extends TokenBasedRememberMeServices {
 		String cookieValue = encodeCookie(tokens);
         Cookie cookie = new Cookie(super.getCookieName(), cookieValue);
         String domain = request.getServerName();
-        if(domain.endsWith(ssoProperties.getRootDomain())){
-        	cookie.setDomain(ssoProperties.getRootDomain());
-        }
+        String[] rootDomains =  ssoProperties.getRootDomains();
+        for (String rootDomain : rootDomains) {
+        	if(domain.endsWith(rootDomain)){
+            	cookie.setDomain(rootDomain);
+            	break;
+            }
+		}
         cookie.setPath("/");
         cookie.setMaxAge(maxAge);
         cookie.setSecure(request.isSecure());
@@ -41,9 +45,13 @@ public class RememberMeCommonServices extends TokenBasedRememberMeServices {
 		logger.debug("Cancelling cookie");
         Cookie cookie = new Cookie(super.getCookieName(), null);
         String domain = request.getServerName();
-        if(domain.endsWith(ssoProperties.getRootDomain())){
-        	cookie.setDomain(ssoProperties.getRootDomain());
-        }
+        String[] rootDomains =  ssoProperties.getRootDomains();
+        for (String rootDomain : rootDomains) {
+        	if(domain.endsWith(rootDomain)){
+            	cookie.setDomain(rootDomain);
+            	break;
+            }
+		}
         cookie.setPath("/");
         cookie.setMaxAge(0);
         response.addCookie(cookie);

@@ -1,7 +1,5 @@
 package io.jee.alaska.firewall.spring.jpa;
 
-import java.util.concurrent.TimeUnit;
-
 import javax.annotation.Resource;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -12,7 +10,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import io.jee.alaska.firewall.FirewallService;
@@ -23,8 +20,6 @@ public class FirewallServiceImpl implements FirewallService {
 	
 	@Resource
 	private FirewallActionCountDao firewallDao;
-	@Resource
-	private FirewallTempStorageDao tempStorageDao;
 
 	@Override
 	public boolean verifyActionCount(String keyword, long minuteAfter, int count, byte type) {
@@ -54,41 +49,6 @@ public class FirewallServiceImpl implements FirewallService {
 		firewallDao.deleteByTimeLessThan(time);
 	}
 
-	@Transactional(isolation=Isolation.SERIALIZABLE)
-	@Override
-	public void addTempStorage(String key, String content, long expireMillis) {
-		FirewallTempStorage firewallTempStorage = new FirewallTempStorage();
-		firewallTempStorage.setKeyword(key);
-		firewallTempStorage.setContent(content);
-		firewallTempStorage.setExpire(System.currentTimeMillis()+expireMillis);
-		tempStorageDao.save(firewallTempStorage);
-	}
-
-	@Transactional(isolation=Isolation.SERIALIZABLE)
-	@Override
-	public void addTempStorage(String key, String content, TimeUnit timeUnit, long duration) {
-		this.addTempStorage(key, content, timeUnit.toMillis(duration));
-	}
-
-	@Override
-	public FirewallTempStorage getTempStorage(String key) {
-		FirewallTempStorage tempStorage = tempStorageDao.findOne(key);
-		if(tempStorage!=null&&tempStorage.getExpire()>System.currentTimeMillis()){
-			return tempStorage;
-		}
-		return null;
-	}
-	
-	@Override
-	public void removeTempStorage(FirewallTempStorage tempStorage) {
-		tempStorageDao.delete(tempStorage);
-	}
-
-	@Override
-	public void clearTempStorage() {
-		tempStorageDao.deleteByTimeLessThan(System.currentTimeMillis());
-	}
-	
 	@Service
 	@Profile("master")
 	public class ClearFirewallService{
@@ -96,7 +56,6 @@ public class FirewallServiceImpl implements FirewallService {
 		@Scheduled(fixedRate=60*1000*5)
 		public void clear(){
 			clearActionCount();
-			clearTempStorage();
 		}
 		
 	}
