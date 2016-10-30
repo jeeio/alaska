@@ -7,7 +7,5 @@ public interface TicketService {
 	String addTicket(String username);
 	
 	TicketVerify verifyTicket(String ticket);
-	
-	void clear();
 
 }

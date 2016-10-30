@@ -1,4 +1,4 @@
-package io.jee.alaska.sso.server.ticket;
+package io.jee.alaska.sso.server.jpa;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,7 +43,6 @@ public class JpaTicketService implements TicketService {
 		return ticketVerify;
 	}
 
-	@Override
 	public void clear() {
 		ssoTicketRepository.deleteByTimeLessThan(System.currentTimeMillis()-100000);
 	}
