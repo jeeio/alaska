@@ -9,6 +9,10 @@ import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 import io.jee.alaska.spring.jpa.condition.Condition;
+import io.jee.alaska.spring.jpa.condition.Count;
+import io.jee.alaska.spring.jpa.condition.Delete;
+import io.jee.alaska.spring.jpa.condition.Select;
+import io.jee.alaska.spring.jpa.condition.Update;
 
 public class SimpleAlaskaRepository<T, ID extends Serializable> extends SimpleJpaRepository<T, ID>
 		implements AlaskaRepository<T, ID> {
@@ -31,6 +35,30 @@ public class SimpleAlaskaRepository<T, ID extends Serializable> extends SimpleJp
 	public Condition<T> condition() {
 		return new Condition<>(entityManager, domainClass);
 	}
-
+	
+	@Override
+	public Select<T> select(){
+		return new Select<>(false, entityManager, domainClass);
+	}
+	
+	@Override
+	public Select<T> select(boolean cacheable){
+		return new Select<>(cacheable, entityManager, domainClass);
+	}
+	
+	@Override
+	public Count<T> selectCount(){
+		return new Count<>(entityManager, domainClass);
+	}
+	
+	@Override
+	public Update<T> update(){
+		return new Update<>(entityManager, domainClass);
+	}
+	
+	@Override
+	public Delete<T> delete(){
+		return new Delete<>(entityManager, domainClass);
+	}
 
 }
