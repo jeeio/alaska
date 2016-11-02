@@ -14,7 +14,11 @@ public class Condition<T> {
 	}
 	
 	public Select<T> select(){
-		return new Select<>(entityManager, clazz);
+		return new Select<>(false, entityManager, clazz);
+	}
+	
+	public Select<T> select(boolean cacheable){
+		return new Select<>(cacheable, entityManager, clazz);
 	}
 	
 	public Count<T> count(){

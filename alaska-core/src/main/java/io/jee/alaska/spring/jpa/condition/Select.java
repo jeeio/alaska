@@ -29,7 +29,10 @@ public class Select<T> {
 	private Map<String, String> orderBy = new HashMap<>();
 	private AtomicInteger p = new AtomicInteger(0);
 	
-	public Select(EntityManager entityManager, Class<T> clazz) {
+	private boolean cacheable;
+	
+	public Select(boolean cacheable, EntityManager entityManager, Class<T> clazz) {
+		this.cacheable = cacheable;
 		this.entityManager = entityManager;
 		this.clazz = clazz;
 		hql = new StringBuffer("select e from " + clazz.getName() +" e");
@@ -200,6 +203,9 @@ public class Select<T> {
 				hql.replace(7, 8, "e."+field);
 			}
 			TypedQuery<X> query = entityManager.createQuery(hql.toString(), clazz);
+			if(cacheable){
+				query.setHint("org.hibernate.cacheable", true);
+			}
 			for (Entry<String,Object> entry : param.entrySet()) {
 				Object value = entry.getValue();
 				query.setParameter(entry.getKey(), value);
