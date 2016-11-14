@@ -1,4 +1,4 @@
-package io.jee.alaska.firewall.spring.jpa;
+package io.jee.alaska.firewall.spring.data.jpa;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,8 +10,7 @@ public class FirewallActionCount {
 
 	private Integer id;
 	private String keyword;
-	private Long time;
-	private byte type;
+	private Long timeout;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -31,20 +30,12 @@ public class FirewallActionCount {
 		this.keyword = keyword;
 	}
 
-	public Long getTime() {
-		return time;
+	public Long getTimeout() {
+		return timeout;
 	}
 
-	public void setTime(Long time) {
-		this.time = time;
-	}
-
-	public byte getType() {
-		return type;
-	}
-
-	public void setType(byte type) {
-		this.type = type;
+	public void setTimeout(Long timeout) {
+		this.timeout = timeout;
 	}
 	
 }
