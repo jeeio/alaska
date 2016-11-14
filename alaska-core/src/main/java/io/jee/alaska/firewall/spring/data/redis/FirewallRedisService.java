@@ -4,7 +4,8 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.data.redis.core.BoundSetOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ import io.jee.alaska.firewall.FirewallService;
 @Service
 public class FirewallRedisService implements FirewallService {
 	
-	@Autowired
+	@Resource
 	private RedisTemplate<String, Long> redisTemplate;
 	
 	@Override
