@@ -13,7 +13,6 @@ public class FirewallRedisService implements FirewallService {
 	
 	@Override
 	public boolean verifyActionCount(String keyword, int count, byte type) {
-		System.out.println(actionCountRepository.findByKeyword(keyword+"-"+type));
 		return actionCountRepository.findByKeyword(keyword+"-"+type).size()<count;
 	}
 
