@@ -1,9 +1,6 @@
 package io.jee.alaska.email;
 
-import java.io.UnsupportedEncodingException;
-
 import javax.annotation.Resource;
-import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.logging.Log;
@@ -30,9 +27,9 @@ public class SimpleEmailSenderHandler implements EmailSenderHandler {
 
 	@Override
 	public Result<?> send(String to, String subject, String text, boolean html, String nickname) {
-		MimeMessage mimeMessage = sender.createMimeMessage();
-		MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
 		try {
+			MimeMessage mimeMessage = sender.createMimeMessage();
+			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
 			helper.setTo(to);
 			if(StringUtils.hasText(nickname)){
 				helper.setFrom(username, nickname);
@@ -43,7 +40,7 @@ public class SimpleEmailSenderHandler implements EmailSenderHandler {
 			helper.setText(text, html);
 			sender.send(mimeMessage);
 			return Result.success();
-		} catch (UnsupportedEncodingException | MessagingException e) {
+		} catch (Exception e) {
 			logger.warn("邮件发送失败："+e.getMessage());
 			return Result.error(e.getMessage());
 		}
