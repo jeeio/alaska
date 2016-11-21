@@ -26,6 +26,7 @@ public class BBCodeUtils {
         bbMap.put("\\[p=(.+?),(.+?)\\](.+?)\\[/p\\]", "<p style='text-indent:$1px;line-height:$2%;'>$3</p>");
         bbMap.put("\\[center\\](.+?)\\[/center\\]", "<div align='center'>$1");
         bbMap.put("\\[align=(.+?)\\](.+?)\\[/align\\]", "<div align='$1'>$2");
+        bbMap.put("\\[font=(.+?)\\](.+?)\\[/font\\]", "<font face='$1'>$2</font>");
         bbMap.put("\\[color=(.+?)\\](.+?)\\[/color\\]", "<span style='color:$1;'>$2</span>");
         bbMap.put("\\[size=(.+?)\\](.+?)\\[/size\\]", "<span style='font-size:$1;'>$2</span>");
         bbMap.put("\\[img\\](.+?)\\[/img\\]", "<img src='$1' />");
