@@ -34,6 +34,10 @@ public class Result<T> implements Serializable {
 		return Result.error(null, message, null, null);
 	}
 	
+	public static <T> Result<T> error(Map<String, String> errorFields){
+		return Result.error(null, null, null, errorFields);
+	}
+	
 	public static <T> Result<T> error(String errorField, String errorFieldMessage){
 		return Result.error(null, errorField, errorFieldMessage);
 	}
@@ -58,6 +62,11 @@ public class Result<T> implements Serializable {
 	
 	public static <T> Result<T> result(boolean success, String message){
 		return new Result<T>(success, null, message, null, null);
+	}
+	
+	public static <T> Result<T> result(Result<?> source){
+		Result<T> target = new Result<T>(source.isSuccess(), source.getCode(), source.getMessage(), null, source.getErrorFields());
+		return target;
 	}
 
 	public Result(Boolean success, Integer code, String message, T data, Map<String, String> errorFields) {
