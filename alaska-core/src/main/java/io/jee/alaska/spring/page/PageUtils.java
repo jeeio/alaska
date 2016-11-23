@@ -28,6 +28,7 @@ public class PageUtils {
 	public static <T> PageOutputDataTable<T> toPageDataTable(Page<T> page, Pageable pageable){
 		PageOutputDataTable<T> outputDataTable = new PageOutputDataTable<>();
 		outputDataTable.setRecordsTotal(page.getTotalElements());
+		outputDataTable.setRecordsFiltered(page.getTotalElements());
 		outputDataTable.setData(page.getContent());
 		return outputDataTable;
 	}
