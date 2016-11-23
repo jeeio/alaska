@@ -24,5 +24,12 @@ public class PageUtils {
 	public static <T> PageLinked<T> toPageLinked(Page<T> page, Pageable pageable){
 		return new PageLinked<>(page, pageable);
 	}
+	
+	public static <T> PageOutputDataTable<T> toPageDataTable(Page<T> page, Pageable pageable){
+		PageOutputDataTable<T> outputDataTable = new PageOutputDataTable<>();
+		outputDataTable.setRecordsTotal(page.getTotalElements());
+		outputDataTable.setData(page.getContent());
+		return outputDataTable;
+	}
 
 }
