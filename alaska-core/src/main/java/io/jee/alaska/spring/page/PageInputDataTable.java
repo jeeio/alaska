@@ -11,6 +11,9 @@ public class PageInputDataTable {
 	private String storeType;
 
 	public int getStart() {
+		if(start>length){
+			start = start / length ;
+		}
 		return start;
 	}
 
