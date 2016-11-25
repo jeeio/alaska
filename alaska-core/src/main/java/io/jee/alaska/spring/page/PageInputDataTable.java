@@ -11,9 +11,6 @@ public class PageInputDataTable {
 	private String storeType;
 
 	public int getStart() {
-		if(start!=0){
-			start = start / length ;
-		}
 		return start;
 	}
 
@@ -50,7 +47,7 @@ public class PageInputDataTable {
 		if(storeType.equalsIgnoreCase("desc")){
 			direction = Direction.DESC;
 		}
-		return new PageRequest(start, length, direction, storeName);
+		return new PageRequest(start/length, length, direction, storeName);
 	}
 
 }
