@@ -21,6 +21,7 @@ public class BBCodeUtils {
         bbMap.put("\\[h4\\](.+?)\\[/h4\\]", "<h4>$1</h4>");
         bbMap.put("\\[h5\\](.+?)\\[/h5\\]", "<h5>$1</h5>");
         bbMap.put("\\[h6\\](.+?)\\[/h6\\]", "<h6>$1</h6>");
+        bbMap.put("\\[code\\](.+?)\\[/code\\]", "<code>$1</code>");
         bbMap.put("\\[quote\\](.+?)\\[/quote\\]", "<blockquote>$1</blockquote>");
         bbMap.put("\\[p\\](.+?)\\[/p\\]", "<p>$1</p>");
         bbMap.put("\\[p=(.+?),(.+?)\\](.+?)\\[/p\\]", "<p style='text-indent:$1px;line-height:$2%;'>$3</p>");
@@ -35,7 +36,7 @@ public class BBCodeUtils {
         bbMap.put("\\[email=(.+?)\\](.+?)\\[/email\\]", "<a href='mailto:$1'>$2</a>");
         bbMap.put("\\[url\\](.+?)\\[/url\\]", "<a href='$1' target=\"_blank\">$1</a>");
         bbMap.put("\\[url=(.+?)\\](.+?)\\[/url\\]", "<a href='$1' target=\"_blank\">$2</a>");
-        bbMap.put("\\[youtube\\](.+?)\\[/youtube\\]", "<object width='640' height='380'><param name='movie' value='http://www.youtube.com/v/$1'></param><embed src='http://www.youtube.com/v/$1' type='application/x-shockwave-flash' width='640' height='380'></embed></object>");
+        bbMap.put("\\[youtube\\](.+?)\\[/youtube\\]", "<object width='640' height='380'><param name='movie' value='https://www.youtube.com/v/$1'></param><embed src='https://www.youtube.com/v/$1' type='application/x-shockwave-flash' width='640' height='380'></embed></object>");
         bbMap.put("\\[video\\](.+?)\\[/video\\]", "<video src='$1' />");
 
         for (Entry<String, String> entry : bbMap.entrySet()) {
