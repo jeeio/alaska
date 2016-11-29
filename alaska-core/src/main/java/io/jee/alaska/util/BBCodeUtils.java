@@ -15,6 +15,9 @@ public class BBCodeUtils {
         bbMap.put("\\[b\\](.+?)\\[/b\\]", "<strong>$1</strong>");
         bbMap.put("\\[i\\](.+?)\\[/i\\]", "<span style='font-style:italic;'>$1</span>");
         bbMap.put("\\[u\\](.+?)\\[/u\\]", "<span style='text-decoration:underline;'>$1</span>");
+        bbMap.put("\\[table\\](.+?)\\[/table\\]", "<table>$1</table>");
+        bbMap.put("\\[tr\\](.+?)\\[/tr\\]", "<tr>$1</tr>");
+        bbMap.put("\\[td\\](.+?)\\[/td\\]", "<td>$1</td>");
         bbMap.put("\\[h1\\](.+?)\\[/h1\\]", "<h1>$1</h1>");
         bbMap.put("\\[h2\\](.+?)\\[/h2\\]", "<h2>$1</h2>");
         bbMap.put("\\[h3\\](.+?)\\[/h3\\]", "<h3>$1</h3>");
