@@ -12,12 +12,12 @@
 		<dependency>
 			<groupId>com.taobao</groupId>
 			<artifactId>taobao-sdk</artifactId>
-			<version>20160607</version>
+			<version>20161124</version>
 		</dependency>
 		<dependency>
 			<groupId>io.jee.alaska</groupId>
 			<artifactId>alaska-core</artifactId>
-			<version>0.0.1</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 		    <groupId>org.dom4j</groupId>

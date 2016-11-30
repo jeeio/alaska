@@ -33,14 +33,14 @@
 	<repositories>
 		<repository>
 			<id>JeeIo-public</id>
-			<url>http://maven.jee.io/repository/maven-public/</url>
+			<url>http://maven.jee.io/content/groups/public/</url>
 		</repository>
 	</repositories>
 
 	<distributionManagement>
 		<repository>
 			<id>releases</id>
-			<url>http://maven.jee.io/repository/maven-public/</url>
+			<url>http://maven.jee.io/content/repositories/releases/</url>
 		</repository>
 	</distributionManagement>
 
