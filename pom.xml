@@ -39,7 +39,8 @@
 
 	<distributionManagement>
 		<repository>
-			<id>releases</id>
+			<id>nexus</id>
+			<name>Releases</name>
 			<url>http://maven.jee.io/content/repositories/releases/</url>
 		</repository>
 	</distributionManagement>
