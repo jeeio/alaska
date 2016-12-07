@@ -32,15 +32,22 @@
 
 	<repositories>
 		<repository>
-			<id>JeeIo-public</id>
-			<url>http://maven.jee.io/content/groups/public/</url>
+			<id>jeeio-nexus</id>
+			<url>http://maven.jee.io/repository/maven-public/</url>
 		</repository>
 	</repositories>
 
+	<pluginRepositories>
+		<pluginRepository>
+			<id>jeeio-nexus</id>
+			<url>http://maven.jee.io/repository/maven-public/</url>
+		</pluginRepository>
+	</pluginRepositories>
+
 	<distributionManagement>
 		<repository>
-			<id>nexus</id>
-			<name>Releases</name>
+			<id>jeeio-nexus</id>
+			<name>releases</name>
 			<url>http://maven.jee.io/content/repositories/releases/</url>
 		</repository>
 	</distributionManagement>
