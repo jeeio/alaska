@@ -8,4 +8,6 @@ public interface ShortMessagingHandler {
 
 	Result<?> send(String signName, Map<String, String> param, String template, String... mobiles);
 	
+	Result<?> send(Map<String, String> param, String template, String... mobiles);
+	
 }

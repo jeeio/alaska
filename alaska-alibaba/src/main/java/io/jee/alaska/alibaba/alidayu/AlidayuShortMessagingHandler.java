@@ -14,10 +14,11 @@ import io.jee.alaska.util.Result;
 
 public class AlidayuShortMessagingHandler implements ShortMessagingHandler {
 	
-	private String serverUrl, appKey, appSecret;
+	private String signName, serverUrl, appKey, appSecret;
 	
 
-	public AlidayuShortMessagingHandler(String serverUrl, String appKey, String appSecret) {
+	public AlidayuShortMessagingHandler(String signName, String serverUrl, String appKey, String appSecret) {
+		this.signName = signName;
 		this.serverUrl = serverUrl;
 		this.appKey = appKey;
 		this.appSecret = appSecret;
@@ -50,6 +51,11 @@ public class AlidayuShortMessagingHandler implements ShortMessagingHandler {
 		} catch (ApiException e) {
 			return Result.error("短信发送失败");
 		}
+	}
+
+	@Override
+	public Result<?> send(Map<String, String> param, String template, String... mobiles) {
+		return this.send(signName, param, template, mobiles);
 	}
 
 }
