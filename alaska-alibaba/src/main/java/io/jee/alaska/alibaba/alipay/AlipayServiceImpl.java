@@ -8,10 +8,9 @@ import io.jee.alaska.alibaba.alipay.util.AlipaySubmit;
 
 public class AlipayServiceImpl implements AlipayService {
 	
-	public AlipayServiceImpl(String partner, String key, String seller_email) {
+	public AlipayServiceImpl(String partner, String key) {
 		AlipayConfig.partner = partner;
 		AlipayConfig.key = key;
-		AlipayConfig.seller_email = seller_email;
 	}
 
 	@Override
@@ -23,7 +22,7 @@ public class AlipayServiceImpl implements AlipayService {
 		Map<String, String> sParaTemp = new HashMap<String, String>();
 		sParaTemp.put("service", AlipayConfig.service);
         sParaTemp.put("partner", AlipayConfig.partner);
-        sParaTemp.put("seller_email", AlipayConfig.seller_email);
+        sParaTemp.put("seller_id", AlipayConfig.seller_id);
         sParaTemp.put("_input_charset", AlipayConfig.input_charset);
 		sParaTemp.put("payment_type", AlipayConfig.payment_type);
 		sParaTemp.put("notify_url", notify_url);

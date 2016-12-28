@@ -19,7 +19,7 @@ public class AlipayConfig {
 	public static String partner = "";
 	
 	// 收款支付宝账号
-	public static String seller_email = "";
+	public static String seller_id = partner;
 
 	// MD5密钥，安全检验码，由数字和字母组成的32位字符串，查看地址：https://b.alipay.com/order/pidAndKey.htm
     public static String key = "";
