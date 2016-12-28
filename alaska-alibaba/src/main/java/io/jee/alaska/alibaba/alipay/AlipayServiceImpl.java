@@ -9,6 +9,7 @@ import io.jee.alaska.alibaba.alipay.util.AlipaySubmit;
 public class AlipayServiceImpl implements AlipayService {
 	
 	public AlipayServiceImpl(String partner, String key) {
+		AlipayConfig.seller_id = partner;
 		AlipayConfig.partner = partner;
 		AlipayConfig.key = key;
 	}
