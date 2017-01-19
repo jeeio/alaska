@@ -2,6 +2,7 @@ package io.jee.alaska.spring.page;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.util.StringUtils;
 
 public class PageInputBSTable {
 
@@ -43,8 +44,13 @@ public class PageInputBSTable {
 	}
 
 	public PageRequest toPageRequest(){
-		Direction direction = Direction.fromStringOrNull(order);
-		return new PageRequest(offset/limit, limit, direction, sort);
+		if(StringUtils.hasText(order)&&StringUtils.hasText(sort)){
+			Direction direction = Direction.fromStringOrNull(order);
+			return new PageRequest(offset/limit, limit, direction, sort);
+		}else{
+			return new PageRequest(offset/limit, limit);
+		}
+		
 	}
 
 }
