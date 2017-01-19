@@ -32,5 +32,12 @@ public class PageUtils {
 		outputDataTable.setData(page.getContent());
 		return outputDataTable;
 	}
+	
+	public static <T> PageOutputBSTable<T> toPageBSTable(Page<T> page, Pageable pageable){
+		PageOutputBSTable<T> outputBSTable = new PageOutputBSTable<>();
+		outputBSTable.setTotal(page.getTotalElements());
+		outputBSTable.setRows(page.getContent());
+		return outputBSTable;
+	}
 
 }
