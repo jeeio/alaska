@@ -236,6 +236,11 @@ public class Select<T> {
 			return query.getResultList();
 		}
 		
+		public <P> List<P> listField(String field, Class<P> clazz){
+			TypedQuery<P> query = common(field, clazz);
+			return query.getResultList();
+		}
+		
 		public List<T> list(int size){
 			TypedQuery<T> query = common(null, clazz).setFirstResult(0).setMaxResults(size);
 			return query.getResultList();
