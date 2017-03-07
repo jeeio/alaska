@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
 
-import io.jee.alaska.data.jpa.hibernate.condition.Condition;
 import io.jee.alaska.data.jpa.hibernate.condition.Count;
 import io.jee.alaska.data.jpa.hibernate.condition.Delete;
 import io.jee.alaska.data.jpa.hibernate.condition.Select;
@@ -18,13 +17,6 @@ import io.jee.alaska.data.jpa.hibernate.condition.Update;
 public interface AlaskaRepository<T, ID extends Serializable> extends JpaRepository<T, ID>, JpaSpecificationExecutor<T>{
 
 	T findOne(ID id, LockModeType lockMode);
-	
-	/**
-	 * 二级选项已经提出到一级
-	 * @return
-	 */
-	@Deprecated
-	Condition<T> condition();
 	
 	Select<T> select();
 	

@@ -8,7 +8,6 @@ import javax.persistence.LockModeType;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
-import io.jee.alaska.data.jpa.hibernate.condition.Condition;
 import io.jee.alaska.data.jpa.hibernate.condition.Count;
 import io.jee.alaska.data.jpa.hibernate.condition.Delete;
 import io.jee.alaska.data.jpa.hibernate.condition.Select;
@@ -31,11 +30,6 @@ public class SimpleAlaskaRepository<T, ID extends Serializable> extends SimpleJp
 		return entityManager.find(domainClass, id, lockMode);
 	}
 
-	@Override
-	public Condition<T> condition() {
-		return new Condition<>(entityManager, domainClass);
-	}
-	
 	@Override
 	public Select<T> select(){
 		return new Select<>(false, entityManager, domainClass);
