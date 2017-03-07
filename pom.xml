@@ -2,22 +2,23 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.4.2.RELEASE</version>
-	</parent>
-
 	<groupId>io.jee.alaska</groupId>
 	<artifactId>alaska-parent</artifactId>
-	<version>0.0.1</version>
+	<version>1.0.0</version>
 	<packaging>pom</packaging>
+	
+	<parent>
+        <groupId>io.spring.platform</groupId>
+        <artifactId>platform-bom</artifactId>
+        <version>Brussels-RELEASE</version>
+        <relativePath/>
+    </parent>
 	
 	<properties>
 		<java.version>1.8</java.version>
 		<hibernate.version>5.2.1.Final</hibernate.version>
 	</properties>
-
+	
 	<build>
 		<plugins>
 			<plugin>
@@ -48,7 +49,7 @@
 		<repository>
 			<id>jeeio-nexus</id>
 			<name>releases</name>
-			<url>http://maven.jee.io/content/repositories/releases/</url>
+			<url>http://maven.jee.io/repository/maven-releases/</url>
 		</repository>
 	</distributionManagement>
 
@@ -56,23 +57,16 @@
 		<module>alaska-core</module>
 		<module>alaska-sso</module>
 		<module>alaska-alibaba</module>
+		<module>alaska-data-jpa-hibernate</module>
+		<module>alaska-data</module>
+		<module>alaska-firewall</module>
 	</modules>
+	
 	<dependencies>
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<version>1.2</version>
-		</dependency>
-		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-autoconfigure</artifactId>
-			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>

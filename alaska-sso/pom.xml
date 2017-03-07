@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>io.jee.alaska</groupId>
 		<artifactId>alaska-parent</artifactId>
-		<version>0.0.1</version>
+		<version>1.0.0</version>
 	</parent>
 	<artifactId>alaska-sso</artifactId>
 
@@ -52,8 +52,8 @@
 			<artifactId>jackson-databind</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-redis</artifactId>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-redis</artifactId>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>

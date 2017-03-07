@@ -6,24 +6,20 @@
 		<artifactId>alaska-parent</artifactId>
 		<version>1.0.0</version>
 	</parent>
-	<artifactId>alaska-alibaba</artifactId>
-
+	<artifactId>alaska-data</artifactId>
 	<dependencies>
-		<dependency>
-			<groupId>com.taobao</groupId>
-			<artifactId>taobao-sdk</artifactId>
-			<version>20161124</version>
-		</dependency>
 		<dependency>
 			<groupId>io.jee.alaska</groupId>
 			<artifactId>alaska-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.dom4j</groupId>
-		    <artifactId>dom4j</artifactId>
-		    <version>2.0.0</version>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-commons</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
 		</dependency>
 	</dependencies>
-
 </project>
