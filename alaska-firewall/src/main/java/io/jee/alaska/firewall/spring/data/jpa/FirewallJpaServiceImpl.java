@@ -19,12 +19,12 @@ import io.jee.alaska.firewall.FirewallService;
 public class FirewallJpaServiceImpl implements FirewallService {
 	
 	@Resource
-	private FirewallActionCountDao firewallDao;
+	private FirewallActionCountRepository firewallRepository;
 
 	@Override
 	public boolean verifyActionCount(String keyword, int count, byte type) {
 		long time = System.currentTimeMillis();
-		long size = firewallDao.count(new Specification<FirewallActionCount>() {
+		long size = firewallRepository.count(new Specification<FirewallActionCount>() {
 			
 			@Override
 			public Predicate toPredicate(Root<FirewallActionCount> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
@@ -39,12 +39,12 @@ public class FirewallJpaServiceImpl implements FirewallService {
 		FirewallActionCount firewall = new FirewallActionCount();
 		firewall.setKeyword(keyword+"-"+type);
 		firewall.setTimeout(System.currentTimeMillis() + (minuteAfter*60*1000));
-		firewallDao.save(firewall);
+		firewallRepository.save(firewall);
 	}
 	
 	public void clearActionCount() {
 		long time = System.currentTimeMillis();
-		firewallDao.deleteByTimeoutLessThan(time);
+		firewallRepository.deleteByTimeoutLessThan(time);
 	}
 
 	@Service
