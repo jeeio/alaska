@@ -21,11 +21,15 @@ public interface HttpClientHelper {
 	
 	HttpResult get(String uri);
 	
+	byte[] getBody(String uri);
+	
 	HttpResult get(String uri, int connectionRequestTimeout, int connectTimeout, int socketTimeout);
 	
 	HttpResult get(HttpGet httpGet);
 	
 	HttpResult execute(HttpRequestBase httpRequest, int connectionRequestTimeout, int connectTimeout, int socketTimeout);
+	
+	byte[] executeBody(HttpRequestBase httpRequest, int connectionRequestTimeout, int connectTimeout, int socketTimeout);
 	
 	String builderGetUri(String scheme, String host, int port, String path, List <NameValuePair> nvps);
 

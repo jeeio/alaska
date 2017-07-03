@@ -80,6 +80,12 @@ public class DefaultHttpClientHelper implements HttpClientHelper, InitializingBe
 	}
 	
 	@Override
+	public byte[] getBody(String uri){
+		HttpGet httpGet = new HttpGet(uri);
+		return this.executeBody(httpGet, 30000, 10000, 30000);
+	}
+	
+	@Override
 	public HttpResult get(String uri, int connectionRequestTimeout, int connectTimeout, int socketTimeout){
 		HttpGet httpGet = new HttpGet(uri);
 		return this.execute(httpGet, connectionRequestTimeout, connectTimeout, socketTimeout);
@@ -88,6 +94,31 @@ public class DefaultHttpClientHelper implements HttpClientHelper, InitializingBe
 	@Override
 	public HttpResult get(HttpGet httpGet) {
 		return this.execute(httpGet, 30000, 10000, 30000);
+	}
+	
+	@Override
+	public byte[] executeBody(HttpRequestBase httpRequest, int connectionRequestTimeout, int connectTimeout,
+			int socketTimeout) {
+		CloseableHttpResponse httpResponse = null;
+		try{
+			RequestConfig.Builder builder = RequestConfig.custom();
+			if(connectionRequestTimeout>0){
+				builder.setConnectionRequestTimeout(connectionRequestTimeout);
+			}
+			if(connectTimeout>0){
+				builder.setConnectTimeout(connectTimeout);
+			}
+			if(socketTimeout>0){
+				builder.setSocketTimeout(socketTimeout);
+			}
+			httpRequest.setConfig(builder.build());
+			httpResponse = httpClient.execute(httpRequest);
+			return EntityUtils.toByteArray(httpResponse.getEntity());
+		} catch (Exception e){
+		}finally{
+			HttpClientUtils.closeQuietly(httpResponse);
+		}
+		return null;
 	}
 	
 	@Override
