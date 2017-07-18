@@ -18,23 +18,23 @@ public class SimpleEmailSenderHandler implements EmailSenderHandler {
 	
 	private JavaMailSender sender;
 	private String username;
-	private String nickname;
+	private String personal;
 	
-	public SimpleEmailSenderHandler(String nickname) {
+	public SimpleEmailSenderHandler(String personal) {
 		super();
-		this.nickname = nickname;
+		this.personal = personal;
 	}
 
 	@Override
-	public Result<?> send(String to, String subject, String text, boolean html, String nickname) {
+	public Result<?> send(String to, String subject, String text, boolean html, String personal) {
 		try {
 			MimeMessage mimeMessage = sender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
 			helper.setTo(to);
-			if(StringUtils.hasText(nickname)){
-				helper.setFrom(username, nickname);
+			if(StringUtils.hasText(personal)){
+				helper.setFrom(username, personal);
 			}else{
-				helper.setFrom(username, this.nickname);
+				helper.setFrom(username, this.personal);
 			}
 			helper.setSubject(subject);
 			helper.setText(text, html);
@@ -52,8 +52,8 @@ public class SimpleEmailSenderHandler implements EmailSenderHandler {
 	}
 	
 	@Override
-	public Result<?> sendHtml(String to, String subject, String html, String nickname) {
-		return this.send(to, subject, html, true, nickname);
+	public Result<?> sendHtml(String to, String subject, String html, String personal) {
+		return this.send(to, subject, html, true, personal);
 	}
 
 	@Resource
