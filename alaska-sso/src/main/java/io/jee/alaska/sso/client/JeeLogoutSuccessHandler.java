@@ -18,6 +18,7 @@ public class JeeLogoutSuccessHandler extends
 			HttpServletResponse response, Authentication authentication)
 			throws IOException, ServletException {
 		if(request.getParameter("mini")!=null){
+			response.setContentType("application/x-javascript");
 			response.addHeader("P3P", "CP=\"CURa ADMa DEVa PSAo PSDo OUR BUS UNI PUR INT DEM STA PRE COM NAV OTC NOI DSP COR\"");
 			response.getWriter().write("");
 		}else{
