@@ -6,14 +6,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-public class PageSample<T> {
+public class PageOutput<T> {
 
 	private List<T> content;
 	private long total;
 	
-	public PageSample() {}
+	public PageOutput() {}
 
-	public PageSample(List<T> content, long total) {
+	public PageOutput(List<T> content, long total) {
 		this.content = content;
 		this.total = total;
 	}
