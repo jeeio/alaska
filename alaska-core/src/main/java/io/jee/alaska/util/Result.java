@@ -68,6 +68,8 @@ public class Result<T> implements Serializable {
 		Result<T> target = new Result<T>(source.isSuccess(), source.getCode(), source.getMessage(), null, source.getErrorFields());
 		return target;
 	}
+	
+	public Result() { }
 
 	public Result(Boolean success, Integer code, String message, T data, Map<String, String> errorFields) {
 		this.success = success;
