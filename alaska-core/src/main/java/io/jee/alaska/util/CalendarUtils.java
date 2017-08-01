@@ -1,8 +1,6 @@
 package io.jee.alaska.util;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -53,15 +51,6 @@ public class CalendarUtils {
 		long milliseconds2 = endCal.getTimeInMillis();
 		int diff = (int) ((milliseconds2 - milliseconds1)/1000);
 		return diff;
-	}
-	
-	public static void main(String[] args) throws ParseException {
-		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date startDate1 = fmt.parse("2013-11-30 08:23:23");
-        
-        Date endDate1 = fmt.parse("2013-11-31 12:32:43");
-        
-        System.out.println(dayDiff(startDate1, endDate1));
 	}
 	
 	public static Date addYear(Date date, int year) {

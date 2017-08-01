@@ -1,21 +1,46 @@
 package io.jee.alaska.data.hibernate;
 
+import java.io.IOException;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Properties;
 
 import org.hibernate.boot.model.naming.Identifier;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
 import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.StringUtils;
-
-import io.jee.alaska.util.PropertiesUtils;
+import org.yaml.snakeyaml.Yaml;
 
 public class PrefixPhysicalNamingStrategy implements PhysicalNamingStrategy {
 	
 	private String tablePrefix;
 	
-	public PrefixPhysicalNamingStrategy() {
-		PropertiesUtils propertiesUtils = PropertiesUtils.loadProperties("application.properties");
-		tablePrefix = propertiesUtils.getValue("alaska.orm.prefix");
+	public PrefixPhysicalNamingStrategy() throws IOException {
+		ClassPathResource cpr = new ClassPathResource("application.properties");
+		if(cpr.exists()){
+			Properties properties = new Properties();
+			properties.load(cpr.getInputStream());
+			tablePrefix = (String) properties.getProperty("alaska.orm.prefix");
+		}
+		cpr = new ClassPathResource("application.yml");
+		if(cpr.exists()&&!StringUtils.hasText(tablePrefix)){
+			Yaml yaml = new Yaml();
+			@SuppressWarnings("unchecked")
+			Map<String, Object> result= (Map<String, Object>) yaml.load(cpr.getInputStream());
+			if(result!=null){
+				@SuppressWarnings("unchecked")
+				Map<String, Object> alaska = (Map<String, Object>) result.get("alaska");
+				if(alaska!=null){
+					@SuppressWarnings("unchecked")
+					Map<String, String> orm = (Map<String, String>) alaska.get("orm");
+					if(orm!=null){
+						tablePrefix = orm.get("prefix");
+					}
+				}
+			}
+		}
+	
 		if(!StringUtils.hasText(tablePrefix)){
 			tablePrefix = "ala_";
 		}
