@@ -17,25 +17,34 @@ public class PrefixPhysicalNamingStrategy implements PhysicalNamingStrategy {
 	private String tablePrefix;
 	
 	public PrefixPhysicalNamingStrategy() throws IOException {
-		ClassPathResource cpr = new ClassPathResource("application.properties");
+		System.out.println(System.getenv());
+		ClassPathResource cpr = new ClassPathResource("bootstrap.properties");
+		if(!cpr.exists()){
+			cpr = new ClassPathResource("application.properties");
+		}
 		if(cpr.exists()){
 			Properties properties = new Properties();
 			properties.load(cpr.getInputStream());
 			tablePrefix = (String) properties.getProperty("alaska.orm.prefix");
 		}
-		cpr = new ClassPathResource("application.yml");
-		if(cpr.exists()&&!StringUtils.hasText(tablePrefix)){
-			Yaml yaml = new Yaml();
-			@SuppressWarnings("unchecked")
-			Map<String, Object> result= (Map<String, Object>) yaml.load(cpr.getInputStream());
-			if(result!=null){
+		if(!StringUtils.hasText(tablePrefix)){
+			cpr = new ClassPathResource("bootstrap.yml");
+			if(!cpr.exists()){
+				cpr = new ClassPathResource("application.yml");
+			}
+			if(cpr.exists()){
+				Yaml yaml = new Yaml();
 				@SuppressWarnings("unchecked")
-				Map<String, Object> alaska = (Map<String, Object>) result.get("alaska");
-				if(alaska!=null){
+				Map<String, Object> result= (Map<String, Object>) yaml.load(cpr.getInputStream());
+				if(result!=null){
 					@SuppressWarnings("unchecked")
-					Map<String, String> orm = (Map<String, String>) alaska.get("orm");
-					if(orm!=null){
-						tablePrefix = orm.get("prefix");
+					Map<String, Object> alaska = (Map<String, Object>) result.get("alaska");
+					if(alaska!=null){
+						@SuppressWarnings("unchecked")
+						Map<String, String> orm = (Map<String, String>) alaska.get("orm");
+						if(orm!=null){
+							tablePrefix = orm.get("prefix");
+						}
 					}
 				}
 			}
