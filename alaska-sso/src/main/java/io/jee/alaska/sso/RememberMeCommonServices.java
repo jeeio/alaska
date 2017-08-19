@@ -24,7 +24,7 @@ public class RememberMeCommonServices extends TokenBasedRememberMeServices {
 		String cookieValue = encodeCookie(tokens);
         Cookie cookie = new Cookie(super.getCookieName(), cookieValue);
         String domain = request.getServerName();
-        String[] rootDomains =  ssoProperties.getRootDomains();
+        String[] rootDomains =  ssoProperties.getRootDomain();
         for (String rootDomain : rootDomains) {
         	if(domain.endsWith(rootDomain)){
             	cookie.setDomain(rootDomain);
@@ -45,7 +45,7 @@ public class RememberMeCommonServices extends TokenBasedRememberMeServices {
 		logger.debug("Cancelling cookie");
         Cookie cookie = new Cookie(super.getCookieName(), null);
         String domain = request.getServerName();
-        String[] rootDomains =  ssoProperties.getRootDomains();
+        String[] rootDomains =  ssoProperties.getRootDomain();
         for (String rootDomain : rootDomains) {
         	if(domain.endsWith(rootDomain)){
             	cookie.setDomain(rootDomain);

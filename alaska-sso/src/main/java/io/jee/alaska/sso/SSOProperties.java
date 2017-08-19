@@ -5,16 +5,16 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "alaska.sso")
 public class SSOProperties {
 	
-	private String[] rootDomains;
+	private String[] rootDomain;
 	private String url;
 	private String cid;
 	
-	public String[] getRootDomains() {
-		return rootDomains;
+	public String[] getRootDomain() {
+		return rootDomain;
 	}
 
-	public void setRootDomains(String[] rootDomains) {
-		this.rootDomains = rootDomains;
+	public void setRootDomain(String[] rootDomain) {
+		this.rootDomain = rootDomain;
 	}
 
 	public String getUrl() {
