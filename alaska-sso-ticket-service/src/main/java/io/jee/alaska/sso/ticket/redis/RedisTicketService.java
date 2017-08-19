@@ -1,4 +1,4 @@
-package io.jee.alaska.sso.server.redis;
+package io.jee.alaska.sso.ticket.redis;
 
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -11,8 +11,8 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import io.jee.alaska.sso.TicketService;
 import io.jee.alaska.sso.TicketVerify;
-import io.jee.alaska.sso.server.TicketService;
 
 @Service
 public class RedisTicketService implements TicketService {

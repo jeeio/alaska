@@ -10,9 +10,21 @@
 	<parent>
         <groupId>io.spring.platform</groupId>
         <artifactId>platform-bom</artifactId>
-        <version>Brussels-SR3</version>
+        <version>Brussels-SR4</version>
         <relativePath/>
     </parent>
+    
+    <dependencyManagement>
+	    <dependencies>
+	        <dependency>
+	            <groupId>org.springframework.cloud</groupId>
+	            <artifactId>spring-cloud-dependencies</artifactId>
+	            <version>Dalston.SR2</version>
+	            <type>pom</type>
+	            <scope>import</scope>
+	        </dependency>
+	    </dependencies>
+	</dependencyManagement>
 	
 	<properties>
 		<java.version>1.8</java.version>
@@ -60,6 +72,7 @@
 		<module>alaska-data-jpa-hibernate</module>
 		<module>alaska-data</module>
 		<module>alaska-firewall</module>
+		<module>alaska-sso-ticket-service</module>
 	</modules>
 	
 	<dependencies>
@@ -71,12 +84,12 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-autoconfigure</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>

@@ -1,4 +1,4 @@
-package io.jee.alaska.sso.server.jpa;
+package io.jee.alaska.sso.ticket.jpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

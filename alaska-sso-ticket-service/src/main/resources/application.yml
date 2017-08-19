@@ -1,0 +1,22 @@
+#logging.path=${catalina.home}/logs
+#logging.level.root=WARN
+
+#logging.level.org.springframework.web=debug
+
+server:
+  port: 8000
+
+spring:
+  application:
+    name: alaska-sso-ticket-service
+  redis:
+    host: 192.168.10.40
+    database: 0
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetch-registry: false
+    serviceUrl:
+      defaultZone: http://192.168.10.40:8761/eureka/

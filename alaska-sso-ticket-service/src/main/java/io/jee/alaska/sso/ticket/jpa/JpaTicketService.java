@@ -1,4 +1,4 @@
-package io.jee.alaska.sso.server.jpa;
+package io.jee.alaska.sso.ticket.jpa;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import io.jee.alaska.sso.TicketService;
 import io.jee.alaska.sso.TicketVerify;
-import io.jee.alaska.sso.server.TicketService;
 
 @Service
 @Transactional

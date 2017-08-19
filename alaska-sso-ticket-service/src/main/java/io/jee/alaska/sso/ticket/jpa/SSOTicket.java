@@ -1,4 +1,4 @@
-package io.jee.alaska.sso.server.jpa;
+package io.jee.alaska.sso.ticket.jpa;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
