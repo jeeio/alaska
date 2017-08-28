@@ -1,4 +1,4 @@
-package io.jee.alaska.alibaba.alidayu;
+/*package io.jee.alaska.alibaba.alidayu;
 
 import java.util.Map;
 
@@ -59,3 +59,4 @@ public class AlidayuShortMessagingHandler implements ShortMessagingHandler {
 	}
 
 }
+*/
