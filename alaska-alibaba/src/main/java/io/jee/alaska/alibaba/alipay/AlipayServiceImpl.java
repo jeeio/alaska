@@ -34,17 +34,19 @@ public class AlipayServiceImpl implements AlipayService {
 		pagePayModel.setSubject(subject);
 		pagePayModel.setBody(body);
 		pagePayModel.setTimeoutExpress("30m");
+		pagePayModel.setProductCode("FAST_INSTANT_TRADE_PAY");
+		//pagePayModel.setQrPayMode("0");
 		
 		
 		alipayRequest.setBizModel(pagePayModel);
 		
 		//若想给BizContent增加其他可选请求参数，以增加自定义超时时间参数timeout_express来举例说明
-		//alipayRequest.setBizContent("{\"out_trade_no\":\""+ out_trade_no +"\"," 
-		//		+ "\"total_amount\":\""+ total_amount +"\"," 
-		//		+ "\"subject\":\""+ subject +"\"," 
-		//		+ "\"body\":\""+ body +"\"," 
-		//		+ "\"timeout_express\":\"10m\"," 
-		//		+ "\"product_code\":\"FAST_INSTANT_TRADE_PAY\"}");
+//		alipayRequest.setBizContent("{\"out_trade_no\":\""+ out_trade_no +"\"," 
+//				+ "\"total_amount\":\""+ total_amount +"\"," 
+//				+ "\"subject\":\""+ subject +"\"," 
+//				+ "\"body\":\""+ body +"\"," 
+//				+ "\"timeout_express\":\"10m\"," 
+//				+ "\"product_code\":\"FAST_INSTANT_TRADE_PAY\"}");
 		//请求参数可查阅【电脑网站支付的API文档-alipay.trade.page.pay-请求参数】章节
 		
 		//请求
