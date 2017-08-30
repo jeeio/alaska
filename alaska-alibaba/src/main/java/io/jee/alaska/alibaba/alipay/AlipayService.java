@@ -8,10 +8,10 @@ public interface AlipayService {
 	 * @param return_url 页面跳转同步通知页面路径
 	 * @param out_trade_no 商户订单号
 	 * @param subject 订单名称
-	 * @param total_fee 付款金额
 	 * @param body 订单描述
+	 * @param total_amount 付款金额
 	 * @return
 	 */
-	String pay(String notify_url, String return_url, String out_trade_no, String subject, String total_fee, String body);
+	String pay(String notify_url, String return_url, String out_trade_no, String subject, String body, String total_amount);
 	
 }

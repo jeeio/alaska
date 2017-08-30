@@ -10,9 +10,9 @@
 
 	<dependencies>
 		<dependency>
-		    <groupId>com.aliyun</groupId>
-		    <artifactId>aliyun-java-sdk-sms</artifactId>
-		    <version>3.0.0-rc1</version>
+			<groupId>com.aliyun</groupId>
+			<artifactId>aliyun-java-sdk-dysmsapi</artifactId>
+			<version>20170525</version>
 		</dependency>
 		<dependency>
 		    <groupId>com.alipay</groupId>
@@ -27,12 +27,6 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-		</dependency>
-		
-		<dependency>
-		    <groupId>org.dom4j</groupId>
-		    <artifactId>dom4j</artifactId>
-		    <version>2.0.0</version>
 		</dependency>
 	</dependencies>
 
