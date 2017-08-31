@@ -1,5 +1,7 @@
 package io.jee.alaska.alibaba.alipay;
 
+import org.springframework.util.StringUtils;
+
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
@@ -18,7 +20,7 @@ public class AlipayServiceImpl implements AlipayService {
 	}
 
 	@Override
-	public String pay(String notify_url, String return_url, String out_trade_no, String subject, String body, String total_amount) {
+	public String pay(String notify_url, String return_url, String out_trade_no, String subject, String body, String total_amount, String qr_pay_mode) {
 		
 		//获得初始化的AlipayClient
 		AlipayClient alipayClient = new DefaultAlipayClient(sandbox?AlipayConfig.gatewayUrl_sandbox:AlipayConfig.gatewayUrl, AlipayConfig.app_id, AlipayConfig.merchant_private_key, "json", AlipayConfig.charset, AlipayConfig.alipay_public_key, AlipayConfig.sign_type);
@@ -35,7 +37,9 @@ public class AlipayServiceImpl implements AlipayService {
 		pagePayModel.setBody(body);
 		pagePayModel.setTimeoutExpress("30m");
 		pagePayModel.setProductCode("FAST_INSTANT_TRADE_PAY");
-		//pagePayModel.setQrPayMode("0");
+		if(StringUtils.hasText(qr_pay_mode)){
+			pagePayModel.setQrPayMode(qr_pay_mode);
+		}
 		
 		
 		alipayRequest.setBizModel(pagePayModel);
