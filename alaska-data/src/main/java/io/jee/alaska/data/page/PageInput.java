@@ -76,4 +76,8 @@ public class PageInput implements Serializable {
 		}
 	}
 	
+	public static PageInput of(PageRequest pageRequest) {
+		return new PageInput(pageRequest.getPageNumber(), pageRequest.getPageSize(), pageRequest.getSort());
+	}
+	
 }
