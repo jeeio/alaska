@@ -1,0 +1,19 @@
+server:
+  port: 8000
+
+spring:
+  application:
+    name: alaska-sso-ticket-service
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: caisan-config-server
+      fail-fast: true
+      
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: '@eureka.service.url@'
