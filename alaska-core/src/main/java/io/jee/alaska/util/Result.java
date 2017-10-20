@@ -34,6 +34,10 @@ public class Result<T> implements Serializable {
 		return Result.error(null, message, null, null);
 	}
 	
+	public static <T> Result<T> error(int code, String message){
+		return Result.error(code, message, null, null);
+	}
+	
 	public static <T> Result<T> error(Map<String, String> errorFields){
 		return Result.error(null, null, null, errorFields);
 	}
