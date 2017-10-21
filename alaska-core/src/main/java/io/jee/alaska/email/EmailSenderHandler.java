@@ -6,6 +6,8 @@ public interface EmailSenderHandler {
 	
 	Result<?> send(String to, String subject, String text, boolean html, String nickname);
 	
+	Result<?> send(String to[], String subject, String text, boolean html, String nickname);
+	
 	Result<?> sendHtml(String to, String subject, String html);
 	
 	Result<?> sendHtml(String to, String subject, String html, String nickname);

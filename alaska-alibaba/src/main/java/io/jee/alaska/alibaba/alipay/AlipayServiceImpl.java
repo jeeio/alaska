@@ -20,7 +20,7 @@ public class AlipayServiceImpl implements AlipayService {
 	}
 
 	@Override
-	public String pay(String notify_url, String return_url, String out_trade_no, String subject, String body, String total_amount, String qr_pay_mode) {
+	public String pay(String notify_url, String return_url, String out_trade_no, String subject, String body, String total_amount, String qr_pay_mode, Long qrcodeWidth) {
 		
 		//获得初始化的AlipayClient
 		AlipayClient alipayClient = new DefaultAlipayClient(sandbox?AlipayConfig.gatewayUrl_sandbox:AlipayConfig.gatewayUrl, AlipayConfig.app_id, AlipayConfig.merchant_private_key, "json", AlipayConfig.charset, AlipayConfig.alipay_public_key, AlipayConfig.sign_type);
@@ -39,6 +39,9 @@ public class AlipayServiceImpl implements AlipayService {
 		pagePayModel.setProductCode("FAST_INSTANT_TRADE_PAY");
 		if(StringUtils.hasText(qr_pay_mode)){
 			pagePayModel.setQrPayMode(qr_pay_mode);
+		}
+		if(qrcodeWidth!=null) {
+			pagePayModel.setQrcodeWidth(qrcodeWidth);
 		}
 		
 		

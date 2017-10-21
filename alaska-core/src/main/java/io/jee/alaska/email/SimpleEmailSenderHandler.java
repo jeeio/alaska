@@ -26,7 +26,12 @@ public class SimpleEmailSenderHandler implements EmailSenderHandler {
 	}
 
 	@Override
-	public Result<?> send(String to, String subject, String text, boolean html, String personal) {
+	public Result<?> send(String to, String subject, String text, boolean html, String nickname) {
+		return this.send(new String[]{to}, subject, text, html, nickname);
+	}
+	
+	@Override
+	public Result<?> send(String[] to, String subject, String text, boolean html, String nickname) {
 		try {
 			MimeMessage mimeMessage = sender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);

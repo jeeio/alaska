@@ -12,6 +12,6 @@ public interface AlipayService {
 	 * @param total_amount 付款金额
 	 * @return
 	 */
-	String pay(String notify_url, String return_url, String out_trade_no, String subject, String body, String total_amount, String qr_pay_mode);
+	String pay(String notify_url, String return_url, String out_trade_no, String subject, String body, String total_amount, String qr_pay_mode, Long qrcodeWidth);
 	
 }
