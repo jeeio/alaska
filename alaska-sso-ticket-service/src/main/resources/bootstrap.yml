@@ -17,3 +17,7 @@ eureka:
   client:
     service-url:
       defaultZone: '@eureka.service.url@'
+      
+logging:
+  level:
+    root: WARN
