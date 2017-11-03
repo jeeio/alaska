@@ -1,5 +1,7 @@
 package io.jee.alaska.util;
 
+import java.util.Random;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.util.StringUtils;
@@ -22,5 +24,18 @@ public class IpUtils {
 		}
 		return ip;
 	}
+	
+	public static String randomMac() {
+        Random random = new Random();
+        String[] mac = {
+                String.format("%02x", random.nextInt(0xff)),
+                String.format("%02x", random.nextInt(0xff)),
+                String.format("%02x", random.nextInt(0xff)),
+                String.format("%02x", random.nextInt(0xff)),
+                String.format("%02x", random.nextInt(0xff)),
+                String.format("%02x", random.nextInt(0xff))
+        };
+        return String.join(":", mac);
+    }
 	
 }
