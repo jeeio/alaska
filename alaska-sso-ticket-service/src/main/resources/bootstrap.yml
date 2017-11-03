@@ -1,6 +1,3 @@
-server:
-  port: 8000
-
 spring:
   application:
     name: alaska-sso-ticket-service
@@ -17,7 +14,3 @@ eureka:
   client:
     service-url:
       defaultZone: '@eureka.service.url@'
-      
-logging:
-  level:
-    root: WARN
