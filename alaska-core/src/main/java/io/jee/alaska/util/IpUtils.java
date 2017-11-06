@@ -28,12 +28,12 @@ public class IpUtils {
 	public static String randomMac() {
         Random random = new Random();
         String[] mac = {
-                String.format("%02x", random.nextInt(0xff)),
-                String.format("%02x", random.nextInt(0xff)),
-                String.format("%02x", random.nextInt(0xff)),
-                String.format("%02x", random.nextInt(0xff)),
-                String.format("%02x", random.nextInt(0xff)),
-                String.format("%02x", random.nextInt(0xff))
+                String.format("%02X", random.nextInt(0xff)),
+                String.format("%02X", random.nextInt(0xff)),
+                String.format("%02X", random.nextInt(0xff)),
+                String.format("%02X", random.nextInt(0xff)),
+                String.format("%02X", random.nextInt(0xff)),
+                String.format("%02X", random.nextInt(0xff))
         };
         return String.join(":", mac);
     }
