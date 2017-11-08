@@ -13,6 +13,13 @@ public class Result<T> implements Serializable {
 	private T data;
 	private Map<String, String> errorFields;
 	
+	public static Result<Map<Object, Object>> successMapData(Object dataKey, Object dataValue){
+		Result<Map<Object, Object>> result = new Result<>();
+		result.setSuccess(true);
+		result.setData(new HashMap<Object, Object>());
+		result.getData().put(dataKey, dataValue);
+		return result;
+	}
 	
 	public static <T> Result<T> success(){
 		return Result.success(null);
