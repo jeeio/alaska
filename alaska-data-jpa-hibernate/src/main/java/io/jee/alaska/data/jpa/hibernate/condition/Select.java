@@ -214,8 +214,7 @@ public class Select<T> {
 		}
 		
 		public T unique(){
-			TypedQuery<T> query = common(null, clazz);
-			return AbstractProducedQuery.uniqueElement(query.getResultList());
+			return this.unique(null);
 		}
 		
 		public <P> P uniqueField(String field, Class<P> clazz){
@@ -242,7 +241,14 @@ public class Select<T> {
 		}
 		
 		public List<T> list(int size){
+			return this.list(size, null);
+		}
+		
+		public List<T> list(int size, LockModeType lockMode){
 			TypedQuery<T> query = common(null, clazz).setFirstResult(0).setMaxResults(size);
+			if(lockMode!=null){
+				query.setLockMode(lockMode);
+			}
 			return query.getResultList();
 		}
 	}
