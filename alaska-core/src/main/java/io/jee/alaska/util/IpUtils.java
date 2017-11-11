@@ -1,5 +1,8 @@
 package io.jee.alaska.util;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,16 +28,17 @@ public class IpUtils {
 		return ip;
 	}
 	
-	public static String randomMac() {
+	public static String randomMac(String prefix) {
+		List<String> mac = null;
+        if(StringUtils.hasText(prefix)) {
+        	mac = new ArrayList<>(Arrays.asList(prefix.split(":")));
+        }else {
+        	mac = new ArrayList<>();
+        }
         Random random = new Random();
-        String[] mac = {
-                String.format("%02X", random.nextInt(0xff)),
-                String.format("%02X", random.nextInt(0xff)),
-                String.format("%02X", random.nextInt(0xff)),
-                String.format("%02X", random.nextInt(0xff)),
-                String.format("%02X", random.nextInt(0xff)),
-                String.format("%02X", random.nextInt(0xff))
-        };
+        for (int i = mac.size(); i < 6; i++) {
+        	mac.add(String.format("%02X", random.nextInt(0xff)));
+		}
         return String.join(":", mac);
     }
 	
