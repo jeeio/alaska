@@ -22,8 +22,25 @@ public class CalendarUtils {
 		                   .get(Calendar.DAY_OF_MONTH);
 		return isSameDate;
 	}
+	
+	public static BigDecimal diffHour(Date start, Date end) {
+		Calendar starCal = Calendar.getInstance();
+		starCal.setTime(start);
 
-	public static BigDecimal dayDiff(Date start, Date end) {
+		Calendar endCal = Calendar.getInstance();
+		endCal.setTime(end);
+		
+		long milliseconds1 = starCal.getTimeInMillis();
+		long milliseconds2 = endCal.getTimeInMillis();
+		long diff = milliseconds2 - milliseconds1;
+		
+		BigDecimal num = new BigDecimal(diff).divide(new BigDecimal(60 * 60 * 1000), 5, BigDecimal.ROUND_HALF_UP);
+
+		return num;
+
+	}
+
+	public static BigDecimal diffDay(Date start, Date end) {
 		Calendar starCal = Calendar.getInstance();
 		starCal.setTime(start);
 
@@ -35,12 +52,11 @@ public class CalendarUtils {
 		long diff = milliseconds2 - milliseconds1;
 		
 		BigDecimal num = new BigDecimal(diff).divide(new BigDecimal(24 * 60 * 60 * 1000), 5, BigDecimal.ROUND_HALF_UP);
-
 		return num;
 
 	}
 	
-	public static int secondDiff(Date start, Date end) {
+	public static int diffSecond(Date start, Date end) {
 		Calendar starCal = Calendar.getInstance();
 		starCal.setTime(start);
 

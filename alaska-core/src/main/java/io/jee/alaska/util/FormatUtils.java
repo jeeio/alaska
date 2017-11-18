@@ -38,7 +38,7 @@ public class FormatUtils {
 	}
 	
 	public static String formatPublishDate(Date date){
-		int diff = CalendarUtils.secondDiff(date, new Date());
+		int diff = CalendarUtils.diffSecond(date, new Date());
 		String format = "";
 		if(diff<60){
 			format = diff + "秒前";
