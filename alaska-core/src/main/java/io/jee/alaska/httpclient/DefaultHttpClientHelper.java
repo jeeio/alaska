@@ -13,6 +13,7 @@ import javax.net.ssl.X509TrustManager;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.http.Consts;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -141,7 +142,7 @@ public class DefaultHttpClientHelper implements HttpClientHelper, InitializingBe
 			
 			result.setSuccess(true);
 			result.setStatusCode(httpResponse.getStatusLine().getStatusCode());
-			result.setContent(EntityUtils.toString(httpResponse.getEntity()));
+			result.setContent(EntityUtils.toString(httpResponse.getEntity(), Consts.UTF_8));
 		} catch (Exception e){
 			result.setSuccess(false);
 			result.setStatusCode(-1);
