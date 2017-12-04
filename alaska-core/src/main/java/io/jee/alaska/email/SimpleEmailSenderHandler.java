@@ -8,7 +8,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.util.StringUtils;
 
 import io.jee.alaska.util.Result;
 
@@ -18,29 +17,15 @@ public class SimpleEmailSenderHandler implements EmailSenderHandler {
 	
 	private JavaMailSender sender;
 	private String username;
-	private String personal;
 	
-	public SimpleEmailSenderHandler(String personal) {
-		super();
-		this.personal = personal;
-	}
 
 	@Override
-	public Result<?> send(String to, String subject, String text, boolean html, String nickname) {
-		return this.send(new String[]{to}, subject, text, html, nickname);
-	}
-	
-	@Override
-	public Result<?> send(String[] to, String subject, String text, boolean html, String nickname) {
+	public Result<?> send(String subject, String text, String nickname, boolean html, String... to) {
 		try {
 			MimeMessage mimeMessage = sender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
 			helper.setTo(to);
-			if(StringUtils.hasText(personal)){
-				helper.setFrom(username, personal);
-			}else{
-				helper.setFrom(username, this.personal);
-			}
+			helper.setFrom(username, nickname);
 			helper.setSubject(subject);
 			helper.setText(text, html);
 			sender.send(mimeMessage);
@@ -52,13 +37,8 @@ public class SimpleEmailSenderHandler implements EmailSenderHandler {
 	}
 
 	@Override
-	public Result<?> sendHtml(String to, String subject, String html) {
-		return this.send(to, subject, html, true, null);
-	}
-	
-	@Override
-	public Result<?> sendHtml(String to, String subject, String html, String personal) {
-		return this.send(to, subject, html, true, personal);
+	public Result<?> sendHtml(String subject, String html, String personal, String to) {
+		return this.send(subject, html, personal, true, to);
 	}
 
 	@Resource

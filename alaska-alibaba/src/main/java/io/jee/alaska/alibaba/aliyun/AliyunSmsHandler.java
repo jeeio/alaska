@@ -21,17 +21,16 @@ public class AliyunSmsHandler {
     //产品域名,开发者无需替换
     static final String domain = "dysmsapi.aliyuncs.com";
 
-    private String accessKeyId, accessKeySecret, signName;
+    private String accessKeyId, accessKeySecret;
     
-    public AliyunSmsHandler(String accessKeyId, String accessKeySecret, String signName) {
+    public AliyunSmsHandler(String accessKeyId, String accessKeySecret) {
 		this.accessKeyId = accessKeyId;
 		this.accessKeySecret = accessKeySecret;
-		this.signName = signName;
 	}
 
 
 
-	public Result<?> send(String signName, Map<String, String> param, String template, String... mobiles) {
+	public Result<?> send(String signName, String template, Map<String, String> param, String... mobiles) {
 
         //可自助调整超时时间
         System.setProperty("sun.net.client.defaultConnectTimeout", "10000");
@@ -72,9 +71,5 @@ public class AliyunSmsHandler {
         	return Result.error("短信发送失败");
 		}
     }
-	
-	public Result<?> send(Map<String, String> param, String template, String... mobiles) {
-		return this.send(this.signName, param, template, mobiles);
-	}
 
 }
