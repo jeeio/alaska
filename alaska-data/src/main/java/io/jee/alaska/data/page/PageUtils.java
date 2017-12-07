@@ -18,7 +18,7 @@ public class PageUtils {
 	
 	public static PageRequest ofLinked(int page, int size, Sort sort) {
 		page = (page < 1) ? 0 : page -1;
-		return new PageRequest(page, size, sort);
+		return PageRequest.of(page, size, sort);
 	}
 
 	public static <T> PageOutputLinked<T> toPageLinked(Page<T> page, Pageable pageable){

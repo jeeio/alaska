@@ -34,7 +34,7 @@ public class JpaTicketService implements TicketService {
 				clear();
 			}
 		}).start();
-		SSOTicket ssoTicket = ssoTicketRepository.findOne(ticket);
+		SSOTicket ssoTicket = ssoTicketRepository.findById(ticket).orElse(null);
 		TicketVerify ticketVerify = new TicketVerify();
 		if(ssoTicket!=null&&ssoTicket.getTime()>System.currentTimeMillis()-60000){
 			ticketVerify.setSuccess(true);

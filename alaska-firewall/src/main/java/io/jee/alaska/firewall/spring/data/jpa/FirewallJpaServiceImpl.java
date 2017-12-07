@@ -23,7 +23,7 @@ public class FirewallJpaServiceImpl implements FirewallService {
 	public boolean verifyActionCount(String keyword, int count, byte type) {
 		long time = System.currentTimeMillis();
 		long size = firewallRepository.count(new Specification<FirewallActionCount>() {
-			
+			private static final long serialVersionUID = 1L;
 			@Override
 			public Predicate toPredicate(Root<FirewallActionCount> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				return query.where(cb.equal(root.get("keyword"), keyword+"-"+type), cb.gt(root.get("timeout"), time)).getRestriction();

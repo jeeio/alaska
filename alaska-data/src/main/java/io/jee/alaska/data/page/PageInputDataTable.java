@@ -47,7 +47,7 @@ public class PageInputDataTable {
 		if(storeType.equalsIgnoreCase("desc")){
 			direction = Direction.DESC;
 		}
-		return new PageRequest(start/length, length, direction, storeName);
+		return PageRequest.of(start/length, length, direction, storeName);
 	}
 
 }

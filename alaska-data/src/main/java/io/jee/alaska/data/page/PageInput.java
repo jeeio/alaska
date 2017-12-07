@@ -66,13 +66,13 @@ public class PageInput implements Serializable {
 
 	public PageRequest toPageRequest(){
 		if(orders ==null){
-			return new PageRequest(page, size);
+			return PageRequest.of(page, size);
 		}else{
 			List<Order> orderList = new ArrayList<>();
 			orders.entrySet().forEach(order -> {
 				orderList.add(new Order(order.getValue(), order.getKey()));
 			});
-			return new PageRequest(page, size, new Sort(orderList));
+			return PageRequest.of(page, size, Sort.by(orderList));
 		}
 	}
 	

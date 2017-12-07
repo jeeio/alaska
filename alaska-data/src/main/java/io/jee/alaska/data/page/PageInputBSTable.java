@@ -46,9 +46,9 @@ public class PageInputBSTable {
 	public PageRequest toPageRequest(){
 		if(StringUtils.hasText(order)&&StringUtils.hasText(sort)){
 			Direction direction = Direction.fromString(order);
-			return new PageRequest(offset/limit, limit, direction, sort);
+			return PageRequest.of(offset/limit, limit, direction, sort);
 		}else{
-			return new PageRequest(offset/limit, limit);
+			return PageRequest.of(offset/limit, limit);
 		}
 		
 	}
