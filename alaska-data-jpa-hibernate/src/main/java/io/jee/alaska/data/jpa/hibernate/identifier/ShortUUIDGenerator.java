@@ -26,8 +26,7 @@ public class ShortUUIDGenerator implements IdentifierGenerator {
 		for (int i = 0; i < 8; i++) {
 			String str = uuid.substring(i * 4, i * 4 + 4);
 			int x = Integer.parseInt(str, 16);
-			System.out.println(x);
-			shortBuffer.append(chars[x % 36]);
+			shortBuffer.append(chars[x % chars.length]);
 		}
 		return shortBuffer.toString();
 	}
