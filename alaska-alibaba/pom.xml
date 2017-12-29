@@ -10,14 +10,19 @@
 
 	<dependencies>
 		<dependency>
+		    <groupId>com.aliyun</groupId>
+		    <artifactId>aliyun-java-sdk-core</artifactId>
+		    <version>3.5.0</version>
+		</dependency>
+		<dependency>
 			<groupId>com.aliyun</groupId>
 			<artifactId>aliyun-java-sdk-dysmsapi</artifactId>
-			<version>20170525</version>
+			<version>1.0.0</version>
 		</dependency>
 		<dependency>
 		    <groupId>com.alipay</groupId>
 		    <artifactId>alipay-sdk-java</artifactId>
-		    <version>20170818173712</version>
+		    <version>20171201160035</version>
 		</dependency>
 		<dependency>
 			<groupId>io.jee.alaska</groupId>
