@@ -6,33 +6,26 @@
 		<artifactId>alaska-parent</artifactId>
 		<version>2.1.0</version>
 	</parent>
-	<artifactId>alaska-data</artifactId>
+	<artifactId>alaska-boot-autoconfigure</artifactId>
+
 	<dependencies>
 		<dependency>
 			<groupId>io.jee.alaska</groupId>
-			<artifactId>alaska-core</artifactId>
+			<artifactId>alaska-data-jpa-hibernate</artifactId>
 			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-commons</artifactId>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
+			<groupId>io.jee.alaska</groupId>
+			<artifactId>alaska-alibaba</artifactId>
+			<version>${project.version}</version>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.yaml</groupId>
-			<artifactId>snakeyaml</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
 	</dependencies>
+
 </project>
