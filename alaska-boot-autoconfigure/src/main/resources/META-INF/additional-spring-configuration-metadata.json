@@ -1,0 +1,7 @@
+{"properties": [
+  {
+    "name": "alaska.orm.prefix",
+    "type": "java.lang.String",
+    "description": "表前缀"
+  }
+]}
