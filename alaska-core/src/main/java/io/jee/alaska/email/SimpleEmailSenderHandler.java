@@ -21,11 +21,21 @@ public class SimpleEmailSenderHandler implements EmailSenderHandler {
 
 	@Override
 	public Result<?> send(String subject, String text, String nickname, boolean html, String... to) {
+		return this.send(subject, text, nickname, username, html, to);
+	}
+
+	@Override
+	public Result<?> sendHtml(String subject, String html, String personal, String to) {
+		return this.send(subject, html, personal, true, to);
+	}
+	
+	@Override
+	public Result<?> send(String subject, String text, String nickname, String from, boolean html, String... to) {
 		try {
 			MimeMessage mimeMessage = sender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
 			helper.setTo(to);
-			helper.setFrom(username, nickname);
+			helper.setFrom(from, nickname);
 			helper.setSubject(subject);
 			helper.setText(text, html);
 			sender.send(mimeMessage);
@@ -34,11 +44,6 @@ public class SimpleEmailSenderHandler implements EmailSenderHandler {
 			logger.warn("邮件发送失败："+e.getMessage());
 			return Result.error(e.getMessage());
 		}
-	}
-
-	@Override
-	public Result<?> sendHtml(String subject, String html, String personal, String to) {
-		return this.send(subject, html, personal, true, to);
 	}
 
 	@Resource
