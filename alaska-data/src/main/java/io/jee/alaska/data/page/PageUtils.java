@@ -39,5 +39,12 @@ public class PageUtils {
 		outputBSTable.setRows(page.getContent());
 		return outputBSTable;
 	}
+	
+	public static <T> PageOutput<T> toPageOutput(Page<T> page){
+		PageOutput<T> output = new PageOutput<>();
+		output.setContent(page.getContent());
+		output.setTotal(page.getTotalElements());
+		return output;
+	}
 
 }

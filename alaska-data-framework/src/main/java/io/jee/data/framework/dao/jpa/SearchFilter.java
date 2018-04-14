@@ -109,25 +109,25 @@ public class SearchFilter {
 		for (Entry<String, Object> entry : searchParams.entrySet()) {
 			String key = entry.getKey();
 			if (!StringUtils.contains(key, '_')) {
-				throw new BusinessException("查询条件不符合规范!");
+				throw new BusinessException("查询条件不符合规范");
 			}
-			//int index = StringUtils.indexOfAny(key, "_");
-			//String[] names = StringUtils.split(key, "_", (index + 1));
-			//将参数改为2，则names最多只有两个元素，是为了参数可以输入列名，而非必须是驼峰形式的属性名。
-			//例如：如果之前参数必须为EQ_fullName如果为EQ_full_name会报错
-            String[] names = StringUtils.split(key, "_", 2);
+			// int index = StringUtils.indexOfAny(key, "_");
+			// String[] names = StringUtils.split(key, "_", (index + 1));
+			// 将参数改为2，则names最多只有两个元素，是为了参数可以输入列名，而非必须是驼峰形式的属性名。
+			// 例如：如果之前参数必须为EQ_fullName如果为EQ_full_name会报错
+			String[] names = StringUtils.split(key, "_", 2);
 			if (names.length < 2) {
-				throw new BusinessException("查询条件截取出错!");
+				throw new BusinessException("查询条件截取出错");
 			}
 			Operator op = Operator.getOpeartor(names[0]);
 			if (op == null) {
-				throw new BusinessException("查询方式未定义!");
+				throw new BusinessException("查询方式未定义");
 			}
 			String filedName = names[1];
 			Object value = entry.getValue();
 			if (value == null || StringUtils.isBlank(String.valueOf(value))) {
-				//searchMap.put("NULL_goodsId", null);如果条件是NULL或NOTNULL是这种情况，值是允许为空的
-				if(!(Operator.NULL.toString().equals(names[0]) || Operator.NOTNULL.toString().equals(names[0]))){
+				// searchMap.put("NULL_goodsId", null);如果条件是NULL或NOTNULL是这种情况，值是允许为空的
+				if (!(Operator.NULL.toString().equals(names[0]) || Operator.NOTNULL.toString().equals(names[0]))) {
 					continue;
 				}
 			}
@@ -140,8 +140,8 @@ public class SearchFilter {
 		StringBuffer str = new StringBuffer();
 		for (int i = 0; i < columName.length(); i++) {
 			char c = columName.charAt(i);
-			//如果是大写，转成小写并在前面添加下划线
-            if (c >= 65 && c <= 90) {
+			// 如果是大写，转成小写并在前面添加下划线
+			if (c >= 65 && c <= 90) {
 				str.append((char) 95).append((char) (c + 32));
 			} else {
 				str.append(c);
