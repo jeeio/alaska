@@ -1,11 +1,14 @@
 package io.jee.data.framework.dao.jdbc;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -62,6 +65,14 @@ public class MysqlExtendJdbcTemplate extends JdbcTemplate implements ExtJdbcTemp
 				return PageUtils.toPageOutput(new PageImpl<T>(Collections.<T>emptyList(), pageable, total));
 			}
 		}
+		
+		if(pageable.getSort() != null) {
+			Iterator<Order> orders = pageable.getSort().iterator();
+			while (orders.hasNext()) {
+				Order order = orders.next();
+				orderMap.put(order.getProperty(), Direction.ASC.equals(order.getDirection()) ? true : false);
+			}
+		}
 
 		if (orderMap != null && !orderMap.isEmpty()) {
 			StringBuilder sqlbuilder = new StringBuilder(sql);
@@ -87,6 +98,14 @@ public class MysqlExtendJdbcTemplate extends JdbcTemplate implements ExtJdbcTemp
 			total = queryForCount(count.sql, count.params);
 			if (total < 1) {
 				return PageUtils.toPageOutput(new PageImpl<T>(Collections.<T>emptyList(), pageable, total));
+			}
+		}
+		
+		if(pageable.getSort() != null) {
+			Iterator<Order> orders = pageable.getSort().iterator();
+			while (orders.hasNext()) {
+				Order order = orders.next();
+				orderMap.put(order.getProperty(), Direction.ASC.equals(order.getDirection()) ? true : false);
 			}
 		}
 
