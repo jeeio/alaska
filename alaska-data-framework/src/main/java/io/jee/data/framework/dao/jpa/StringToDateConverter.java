@@ -27,6 +27,7 @@ public class StringToDateConverter implements Converter<String, Date> {
 		super();
 		addDefaultFormats();
 	}
+
 	@Override
 	public Date convert(String source) {
 		for (String dateFormat : dateFormats) {
@@ -34,11 +35,10 @@ public class StringToDateConverter implements Converter<String, Date> {
 			try {
 				return sdf.parse(source);
 			} catch (Exception e) {
-				// ig
+				e.printStackTrace();
 			}
 		}
 		throw new IllegalArgumentException(String.format("类型转换失败。支持格式：%s,但输入格式是[%s]", dateFormats.toString(), source));
-
 	}
 
 	private void addDefaultFormats() {
