@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.sql.DataSource;
+
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
@@ -19,6 +21,20 @@ import io.jee.alaska.data.page.PageUtils;
 public class MysqlExtJdbcTemplate extends JdbcTemplate implements ExtJdbcTemplate {
 
 	static final String PAGE_QUERY_STRING = " %s limit %d, %d ";
+
+	public MysqlExtJdbcTemplate() {
+	}
+
+	public MysqlExtJdbcTemplate(DataSource dataSource) {
+		setDataSource(dataSource);
+		afterPropertiesSet();
+	}
+	
+	public MysqlExtJdbcTemplate(DataSource dataSource, boolean lazyInit) {
+		setDataSource(dataSource);
+		setLazyInit(lazyInit);
+		afterPropertiesSet();
+	}
 
 	public long queryForCount(String sql, Object... object) {
 		if (QueryCondition.isOutermostGroupBy(sql)) {// 如果SQL最后面是group by，则统计会报错，所以后面加一层
@@ -44,18 +60,20 @@ public class MysqlExtJdbcTemplate extends JdbcTemplate implements ExtJdbcTemplat
 	}
 
 	@Override
-	public <T> List<T> queryForList(Class<T> transClass, String sql, Map<String, Object> searchMap, Map<String, Boolean> orderMap) {
+	public <T> List<T> queryForList(Class<T> transClass, String sql, Map<String, Object> searchMap,
+			Map<String, Boolean> orderMap) {
 		QueryCondition result = QueryCondition.createResultQuery(sql, searchMap, orderMap);
 		return queryForList(transClass, result.sql, result.params);
 	}
 
 	@Override
 	public <T> PageOutput<T> queryForPage(Class<T> transClass, String sql, PageInput pageInput, Object... object) {
-		return queryForPage(transClass, sql, pageInput, null , object);
+		return queryForPage(transClass, sql, pageInput, null, object);
 	}
 
 	@Override
-	public <T> PageOutput<T> queryForPage(Class<T> transClass, String sql, PageInput pageInput, Map<String, Boolean> orderMap, Object... object) {
+	public <T> PageOutput<T> queryForPage(Class<T> transClass, String sql, PageInput pageInput,
+			Map<String, Boolean> orderMap, Object... object) {
 		Pageable pageable = pageInput.toPageRequest();
 		long total = Long.MAX_VALUE;
 		if (pageInput.getSize() != Integer.MAX_VALUE) {
@@ -65,8 +83,8 @@ public class MysqlExtJdbcTemplate extends JdbcTemplate implements ExtJdbcTemplat
 				return PageUtils.toPageOutput(new PageImpl<T>(Collections.<T>emptyList(), pageable, total));
 			}
 		}
-		
-		if(pageable.getSort() != null) {
+
+		if (pageable.getSort() != null) {
 			Iterator<Order> orders = pageable.getSort().iterator();
 			while (orders.hasNext()) {
 				Order order = orders.next();
@@ -85,12 +103,14 @@ public class MysqlExtJdbcTemplate extends JdbcTemplate implements ExtJdbcTemplat
 	}
 
 	@Override
-	public <T> PageOutput<T> queryForPage(Class<T> transClass, String sql, PageInput pageInput, Map<String, Object> searchMap) {
+	public <T> PageOutput<T> queryForPage(Class<T> transClass, String sql, PageInput pageInput,
+			Map<String, Object> searchMap) {
 		return queryForPage(transClass, sql, pageInput, searchMap, null);
 	}
 
 	@Override
-	public <T> PageOutput<T> queryForPage(Class<T> transClass, String sql, PageInput pageInput, Map<String, Object> searchMap, Map<String, Boolean> orderMap) {
+	public <T> PageOutput<T> queryForPage(Class<T> transClass, String sql, PageInput pageInput,
+			Map<String, Object> searchMap, Map<String, Boolean> orderMap) {
 		Pageable pageable = pageInput.toPageRequest();
 		long total = Long.MAX_VALUE;
 		if (pageable.getPageSize() != Integer.MAX_VALUE) {
@@ -100,8 +120,8 @@ public class MysqlExtJdbcTemplate extends JdbcTemplate implements ExtJdbcTemplat
 				return PageUtils.toPageOutput(new PageImpl<T>(Collections.<T>emptyList(), pageable, total));
 			}
 		}
-		
-		if(pageable.getSort() != null) {
+
+		if (pageable.getSort() != null) {
 			Iterator<Order> orders = pageable.getSort().iterator();
 			while (orders.hasNext()) {
 				Order order = orders.next();
