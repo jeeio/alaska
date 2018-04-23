@@ -1,4 +1,4 @@
-package io.jee.data.framework.dao.jpa;
+package io.jee.alaska.data.jpa.hibernate.utils;
 
 import java.util.Collections;
 import java.util.List;
@@ -11,7 +11,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import com.google.common.collect.Lists;
 
-import io.jee.data.framework.exception.BusinessException;
+import io.jee.alaska.exception.BusinessException;
 
 public class SearchFilter {
 	public enum Operator {

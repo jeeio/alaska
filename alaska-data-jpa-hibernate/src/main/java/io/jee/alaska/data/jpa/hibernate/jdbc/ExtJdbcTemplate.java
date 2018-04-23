@@ -1,4 +1,4 @@
-package io.jee.data.framework.dao.jdbc;
+package io.jee.alaska.data.jpa.hibernate.jdbc;
 
 import java.util.List;
 import java.util.Map;

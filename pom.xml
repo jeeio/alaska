@@ -105,7 +105,6 @@
 		<module>alaska-firewall</module>
 		<module>alaska-sso-ticket-service</module>
 		<module>alaska-boot-autoconfigure</module>
-		<module>alaska-data-framework</module>
 	</modules>
 	
 	<dependencies>

@@ -1,4 +1,4 @@
-package io.jee.data.framework.dao.jpa;
+package io.jee.alaska.data.jpa.hibernate.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -7,11 +7,6 @@ import java.util.List;
 
 import org.springframework.core.convert.converter.Converter;
 
-/**
- * String to Date simple converter implement.
- * 
- * @author zhangpu
- */
 public class StringToDateConverter implements Converter<String, Date> {
 
 	public static final String DATE_FORMAT_1 = "yyyy-MM-dd HH:mm:ss";

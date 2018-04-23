@@ -1,4 +1,4 @@
-package io.jee.data.framework.dao.jpa;
+package io.jee.alaska.data.jpa.hibernate.utils;
 
 import org.springframework.core.convert.support.DefaultConversionService;
 

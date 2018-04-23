@@ -1,4 +1,4 @@
-package io.jee.data.framework.exception;
+package io.jee.alaska.exception;
 
 public interface BusinessExceptionMsg {
     int getCode();

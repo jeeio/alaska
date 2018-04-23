@@ -1,4 +1,4 @@
-package io.jee.data.framework.exception;
+package io.jee.alaska.exception;
 
 /**
  * 标记事务可回滚的业务异常,配合声明式事务使用

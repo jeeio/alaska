@@ -1,4 +1,4 @@
-package io.jee.data.framework.dao.jdbc;
+package io.jee.alaska.data.jpa.hibernate.jdbc;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,7 +17,7 @@ import org.springframework.util.Assert;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import io.jee.data.framework.dao.jpa.SearchFilter;
+import io.jee.alaska.data.jpa.hibernate.utils.SearchFilter;
 
 class QueryCondition {
 

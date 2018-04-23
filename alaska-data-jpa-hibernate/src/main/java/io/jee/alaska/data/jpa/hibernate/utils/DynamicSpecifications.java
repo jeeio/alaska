@@ -1,4 +1,4 @@
-package io.jee.data.framework.dao.jpa;
+package io.jee.alaska.data.jpa.hibernate.utils;
 
 import java.sql.Date;
 import java.util.Arrays;
@@ -18,7 +18,7 @@ import org.springframework.util.CollectionUtils;
 
 import com.google.common.collect.Lists;
 
-import io.jee.data.framework.utils.Dates;
+import io.jee.alaska.util.Dates;
 
 public class DynamicSpecifications {
 	private static final ConversionService conversionService = new EnhanceDefaultConversionService();

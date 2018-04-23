@@ -1,4 +1,4 @@
-package io.jee.data.framework.exception;
+package io.jee.alaska.exception;
 
 /**
  * 异常抽象类,将错误信息国际化

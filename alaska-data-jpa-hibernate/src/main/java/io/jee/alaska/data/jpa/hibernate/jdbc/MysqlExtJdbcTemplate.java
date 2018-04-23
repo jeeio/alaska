@@ -1,4 +1,4 @@
-package io.jee.data.framework.dao.jdbc;
+package io.jee.alaska.data.jpa.hibernate.jdbc;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -16,7 +16,7 @@ import io.jee.alaska.data.page.PageInput;
 import io.jee.alaska.data.page.PageOutput;
 import io.jee.alaska.data.page.PageUtils;
 
-public class MysqlExtendJdbcTemplate extends JdbcTemplate implements ExtJdbcTemplate {
+public class MysqlExtJdbcTemplate extends JdbcTemplate implements ExtJdbcTemplate {
 
 	static final String PAGE_QUERY_STRING = " %s limit %d, %d ";
 
