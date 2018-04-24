@@ -150,12 +150,11 @@ class QueryCondition {
 	}
 
 	/**
-	 * 处理统计SQL 处理前SQL：select * from user_info t1 处理后SQL：select count(1) from
-	 * user_info t1
-	 * 
-	 * @author yuwu on 2016年8月18日
+	 * Title: 处理统计SQL 
+	 * 处理前SQL：select * from user_info t1 处理后SQL：select count(1) from user_info t1
 	 * @param sql
 	 * @return
+	 * @author XieXiaoXu on 2018年4月24日
 	 */
 	public static String processCountSql(String sql) {
 		StringBuilder countQuery = new StringBuilder();
@@ -214,12 +213,12 @@ class QueryCondition {
 	}
 
 	/**
-	 * Title:替换查询条件中列别名为真实列名
+	 * Title: 替换查询条件中列别名为真实列名
 	 * 
-	 * @author yuwu on 2016年8月18日
 	 * @param filters
 	 * @param columnsMap
 	 * @return
+	 * @author XieXiaoXu on 2018年4月24日
 	 */
 	public static List<SearchFilter> processSearchFilter(List<SearchFilter> filters, HashMap<String, String> columnsMap) {
 		List<SearchFilter> list = Lists.newArrayList();
@@ -235,12 +234,12 @@ class QueryCondition {
 	}
 
 	/**
-	 * Title:替换order by中的列别名为真实列名
+	 * Title: 替换order by中的列别名为真实列名
 	 * 
-	 * @author yuwu on 2016年8月18日
-	 * @param filters
+	 * @param orderMap
 	 * @param columnsMap
 	 * @return
+	 * @author XieXiaoXu on 2018年4月24日
 	 */
 	public static Map<String, Boolean> processOrderBy(Map<String, Boolean> orderMap, HashMap<String, String> columnsMap) {
 		Map<String, Boolean> orderMapNew = Maps.newLinkedHashMap();
@@ -260,12 +259,12 @@ class QueryCondition {
 	}
 
 	/**
-	 * Title:添加查询过滤条件
+	 * Title: 添加查询过滤条件
 	 * 
-	 * @author yuwu on 2016年8月26日
 	 * @param filters
 	 * @param querysql
 	 * @param params
+	 * @author XieXiaoXu on 2018年4月24日
 	 */
 	private static void filterCondions(List<SearchFilter> filters, StringBuilder querysql, Collection<Object> params) {
 		StringBuilder searchFilterSql = new StringBuilder();
@@ -274,11 +273,11 @@ class QueryCondition {
 	}
 
 	/**
-	 * Title:将查询条件原入到原SQL中
+	 * Title: 将查询条件原入到原SQL中
 	 * 
-	 * @author yuwu on 2016年9月6日
-	 * @param querysql，原查询SQL
-	 * @param searchFilterSql，添加的条件SQL
+	 * @param querysql 原查询SQL
+	 * @param searchFilterSql 添加的条件SQL
+	 * @author XieXiaoXu on 2018年4月24日
 	 */
 	public static void concatSearchFilterSql(StringBuilder querysql, StringBuilder searchFilterSql) {
 		if (searchFilterSql.length() == 0) {
@@ -319,7 +318,7 @@ class QueryCondition {
 	 * Title:判断where是否最外层的where,如果是最外层的，则后面直接跟and和条件，否则后面跟where关键字后再加条件
 	 * 判断的逻辑是：where关键字后面的“(”和“)”的个数一致，则是最外层where
 	 * 
-	 * @author yuwu on 2016年9月5日
+	 * @author XieXiaoXu on 2016年9月5日
 	 * @param querysql
 	 * @return {true:最外层where条件,false:无where关键字或非最外层where条件}
 	 */
@@ -353,7 +352,7 @@ class QueryCondition {
 	 * Title:判断最后一个GROUP BY后面有没有非成对出现的“(”，“)”，如果有非成对出现，则返回true，其它返回false(包括没有找到GROUP
 	 * BY关键字)
 	 * 
-	 * @author yuwu on 2017年1月8日
+	 * @author XieXiaoXu on 2017年1月8日
 	 * @param querysql
 	 * @return {true:最后一个GROUP BY后面的括号是成对出现的,false:无where关键字或最后一个GROUP
 	 *         BY后面的括号不是成对出现的}

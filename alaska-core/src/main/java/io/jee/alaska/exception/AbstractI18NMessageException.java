@@ -1,9 +1,11 @@
 package io.jee.alaska.exception;
 
 /**
- * 异常抽象类,将错误信息国际化
- * 
- * @author pu.zhang
+ * <P>Title: 异常抽象类,将错误信息国际化
+ * <p>Descriptor: 
+ * <P>Copyright (c) CAISAN 2018
+ * @author XieXiaoXu on 2018年4月24日
+ *
  */
 public abstract class AbstractI18NMessageException extends RuntimeException {
 	/** UID */

@@ -1,12 +1,11 @@
 package io.jee.alaska.exception;
 
 /**
- * 标记事务可回滚的业务异常,配合声明式事务使用
- * 
- * 业务系统可以根据业务需求，继承该类定义具体业务相关的业务。如：NoFoundException, ParameterInvaidException 等。
- * 
- * @author pu.zhang
- * 
+ * <P>Title: 标记事务可回滚的业务异常,配合声明式事务使用
+ * <p>Descriptor: 业务系统可以根据业务需求，继承该类定义具体业务相关的业务。如：NoFoundException, ParameterInvaidException 等。
+ * <P>Copyright (c) CAISAN 2018
+ * @author XieXiaoXu on 2018年4月24日
+ *
  */
 public class BusinessException extends AbstractI18NMessageException {
 

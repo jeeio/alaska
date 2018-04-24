@@ -144,7 +144,7 @@ public class SimpleAlaskaRepository<T, ID extends Serializable> extends SimpleJp
 				orders.add(new Order(entry.getValue() ? Direction.ASC : Direction.DESC, entry.getKey()));
 			}
 		} else {
-			orders.add(new Order(Direction.DESC, "id"));
+			//orders.add(new Order(Direction.DESC, "id"));
 		}
 		Sort sort = Sort.by(orders);
 		return sort;
