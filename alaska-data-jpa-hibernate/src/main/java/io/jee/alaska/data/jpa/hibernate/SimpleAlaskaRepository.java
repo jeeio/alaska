@@ -83,6 +83,7 @@ public class SimpleAlaskaRepository<T, ID extends Serializable> extends SimpleJp
 	public void deleteAll(Serializable... ids) {
 		Iterator<Serializable> iterator = Lists.newArrayList(ids).iterator();
 		String queryString = String.format(QueryUtils.DELETE_ALL_QUERY_STRING, domainClass.getSimpleName());
+		@SuppressWarnings("deprecation")
 		String alias = QueryUtils.detectAlias(queryString);
 		StringBuilder builder = new StringBuilder(queryString);
 		builder.append(" where");
