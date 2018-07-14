@@ -4,8 +4,13 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 public class Result<T> implements Serializable {
 
+	public static final Integer CODE_SUCCESS = 0;
+	public static final Integer CODE_ERROR = -1;
 	private static final long serialVersionUID = -6298623269351615426L;
 	private Boolean success;
 	private Integer code;
@@ -30,7 +35,7 @@ public class Result<T> implements Serializable {
 	}
 	
 	public static <T> Result<T> success(String message, T data){
-		return Result.success(null, message, data);
+		return Result.success(CODE_SUCCESS, message, data);
 	}
 	
 	public static <T> Result<T> success(Integer code, String message, T data){
@@ -38,7 +43,7 @@ public class Result<T> implements Serializable {
 	}
 	
 	public static <T> Result<T> error(String message){
-		return Result.error(null, message, null, null);
+		return Result.error(CODE_ERROR, message, null, null);
 	}
 	
 	public static <T> Result<T> error(int code, String message){
@@ -46,11 +51,11 @@ public class Result<T> implements Serializable {
 	}
 	
 	public static <T> Result<T> error(Map<String, String> errorFields){
-		return Result.error(null, null, null, errorFields);
+		return Result.error(CODE_ERROR, null, null, errorFields);
 	}
 	
 	public static <T> Result<T> error(String errorField, String errorFieldMessage){
-		return Result.error(null, errorField, errorFieldMessage);
+		return Result.error(CODE_ERROR, errorField, errorFieldMessage);
 	}
 	
 	public static <T> Result<T> error(Integer code, String errorField, String errorFieldMessage){
@@ -72,7 +77,7 @@ public class Result<T> implements Serializable {
 	}
 	
 	public static <T> Result<T> result(boolean success, String message){
-		return new Result<T>(success, null, message, null, null);
+		return new Result<T>(success, success ? CODE_SUCCESS : CODE_ERROR, message, null, null);
 	}
 	
 	public static <T> Result<T> result(Result<?> source){
@@ -132,8 +137,7 @@ public class Result<T> implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Result [success=" + success + ", code=" + code + ", message=" + message + ", data=" + data
-				+ ", errorFields=" + errorFields + "]";
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 	
 }
