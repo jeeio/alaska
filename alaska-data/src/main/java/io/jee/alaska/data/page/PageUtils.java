@@ -44,6 +44,8 @@ public class PageUtils {
 		PageOutput<T> output = new PageOutput<>();
 		output.setContent(page.getContent());
 		output.setTotal(page.getTotalElements());
+		output.setPageNo(page.getNumber());
+		output.setPageSize(page.getSize());
 		return output;
 	}
 

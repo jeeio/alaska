@@ -111,7 +111,7 @@ public class SimpleAlaskaRepository<T, ID extends Serializable> extends SimpleJp
 		Sort sort = buildSort(orderMap);
 		Pageable pageable = PageRequest.of(pageInput.getPage(), pageInput.getSize(), sort);
 		Page<T> page = this.findAll(spec, pageable);
-		return new PageOutput<>(page.getContent(), page.getTotalElements());
+		return new PageOutput<>(page.getContent(), page.getTotalElements(), pageInput.getPage(), pageInput.getSize());
 	}
 
 	@Override
