@@ -59,11 +59,11 @@ public class PageOutput<T> implements Iterable<T>, Serializable {
 	}
 
 	public boolean hasPrevious() {
-		return getPageNo() > 0;
+		return getPageNo() > 1;
 	}
 
 	public boolean hasNext() {
-		return getPageNo() + 1 < getTotalPage();
+		return getPageNo() + 1 <= getTotalPage();
 	}
 
 	public boolean isFirst() {

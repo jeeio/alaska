@@ -2,6 +2,7 @@ package io.jee.alaska.data.jpa.hibernate.jdbc;
 
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -86,6 +87,7 @@ public class MysqlExtJdbcTemplate extends JdbcTemplate implements ExtJdbcTemplat
 
 		if (pageable.getSort() != null) {
 			Iterator<Order> orders = pageable.getSort().iterator();
+			if(orderMap == null) orderMap = new LinkedHashMap<>();
 			while (orders.hasNext()) {
 				Order order = orders.next();
 				orderMap.put(order.getProperty(), Direction.ASC.equals(order.getDirection()) ? true : false);

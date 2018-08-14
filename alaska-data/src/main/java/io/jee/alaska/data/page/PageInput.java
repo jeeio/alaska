@@ -41,6 +41,7 @@ public class PageInput implements Serializable {
 	}
 
 	public int getPage() {
+		page = page - 1;
 		return page;
 	}
 
@@ -66,13 +67,13 @@ public class PageInput implements Serializable {
 
 	public PageRequest toPageRequest(){
 		if(orders ==null){
-			return PageRequest.of(page, size);
+			return PageRequest.of(getPage(), getSize());
 		}else{
 			List<Order> orderList = new ArrayList<>();
 			orders.entrySet().forEach(order -> {
 				orderList.add(new Order(order.getValue(), order.getKey()));
 			});
-			return PageRequest.of(page, size, Sort.by(orderList));
+			return PageRequest.of(getPage(), getSize(), Sort.by(orderList));
 		}
 	}
 	
