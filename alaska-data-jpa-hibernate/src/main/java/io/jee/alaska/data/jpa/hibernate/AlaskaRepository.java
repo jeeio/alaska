@@ -1,8 +1,6 @@
 package io.jee.alaska.data.jpa.hibernate;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
 
 import javax.persistence.LockModeType;
 
@@ -14,8 +12,6 @@ import io.jee.alaska.data.jpa.hibernate.condition.Count;
 import io.jee.alaska.data.jpa.hibernate.condition.Delete;
 import io.jee.alaska.data.jpa.hibernate.condition.Select;
 import io.jee.alaska.data.jpa.hibernate.condition.Update;
-import io.jee.alaska.data.page.PageInput;
-import io.jee.alaska.data.page.PageOutput;
 
 @NoRepositoryBean
 public interface AlaskaRepository<T, ID extends Serializable> extends JpaRepository<T, ID>, JpaSpecificationExecutor<T>{
@@ -36,8 +32,4 @@ public interface AlaskaRepository<T, ID extends Serializable> extends JpaReposit
 	
 	void deleteAll(Serializable... ids);
 
-	PageOutput<T> queryForPage(PageInput pageInput, Map<String, Object> searchMap, Map<String, Boolean> orderMap);
-
-	List<T> queryForList(Map<String, Object> searchMap, Map<String, Boolean> orderMap);
-	
 }

@@ -4,30 +4,33 @@
 
 	<groupId>io.jee.alaska</groupId>
 	<artifactId>alaska-parent</artifactId>
-	<version>2.1.1</version>
+	<version>3.0.0</version>
 	<packaging>pom</packaging>
 	
 	<parent>
         <groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.0.3.RELEASE</version>
+		<version>2.0.4.RELEASE</version>
         <relativePath/>
     </parent>
-    
+
     <dependencyManagement>
-	    <dependencies>
-	        <dependency>
-	            <groupId>org.springframework.cloud</groupId>
-	            <artifactId>spring-cloud-dependencies</artifactId>
-	            <version>Finchley.RELEASE</version>
-	            <type>pom</type>
-	            <scope>import</scope>
-	        </dependency>
-	    </dependencies>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
 	</dependencyManagement>
 	
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
+		<spring-cloud.version>Finchley.SR1</spring-cloud.version>
 	</properties>
 	
 	<build>
@@ -66,35 +69,22 @@
 
 	<modules>
 		<module>alaska-core</module>
-		<module>alaska-sso</module>
 		<module>alaska-alibaba</module>
 		<module>alaska-data-jpa-hibernate</module>
 		<module>alaska-data</module>
 		<module>alaska-firewall</module>
-		<module>alaska-sso-ticket-service</module>
 		<module>alaska-boot-autoconfigure</module>
 	</modules>
 	
 	<dependencies>
 		<dependency>
-		    <groupId>commons-logging</groupId>
-		    <artifactId>commons-logging</artifactId>
-		    <version>1.2</version>
-		</dependency>
-		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
-		
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-autoconfigure</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
+		    <groupId>cn.hutool</groupId>
+		    <artifactId>hutool-all</artifactId>
+		    <version>4.1.9</version>
 		</dependency>
 	</dependencies>
 </project>
