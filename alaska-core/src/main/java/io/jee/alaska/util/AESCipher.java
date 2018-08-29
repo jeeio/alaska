@@ -35,7 +35,7 @@ public class AESCipher {
 			// return encoder.encodeToString(encryptedBytes);
 			return Base64.encodeBase64String(encryptedBytes);
 		} catch (Exception e) {
-			logger.error("AES加密错误", e);
+			logger.error("AES加密错误");
 		}
 		return null;
 	}
@@ -60,7 +60,7 @@ public class AESCipher {
 			byte[] decryptedBytes = aesDecryptBytes(encryptedBytes, keyBytes);
 			return new String(decryptedBytes, charset);
 		} catch (Exception e) {
-			logger.error("AES解密错误", e);
+			logger.error("AES解密错误");
 		}
 		return null;
 	}
@@ -80,7 +80,7 @@ public class AESCipher {
 		try {
 			return cipherOperation(contentBytes, keyBytes, Cipher.ENCRYPT_MODE);
 		} catch (Exception e) {
-			logger.error("AES加密错误", e);
+			logger.error("AES加密错误");
 		}
 		return null;
 	}
@@ -100,7 +100,7 @@ public class AESCipher {
 		try {
 			return cipherOperation(contentBytes, keyBytes, Cipher.DECRYPT_MODE);
 		} catch (Exception e) {
-			logger.error("AES解密错误", e);
+			logger.error("AES解密错误");
 		}
 		return null;
 	}
