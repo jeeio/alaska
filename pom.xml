@@ -74,6 +74,7 @@
 		<module>alaska-data</module>
 		<module>alaska-firewall</module>
 		<module>alaska-boot-autoconfigure</module>
+		<module>alaska-pay</module>
 	</modules>
 	
 	<dependencies>

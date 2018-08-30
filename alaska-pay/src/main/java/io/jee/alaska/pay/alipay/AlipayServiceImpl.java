@@ -1,30 +1,22 @@
-package io.jee.alaska.alibaba.alipay;
+package io.jee.alaska.pay.alipay;
 
-import org.springframework.util.StringUtils;
+import javax.annotation.Resource;
 
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
-import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.domain.AlipayTradePagePayModel;
 import com.alipay.api.request.AlipayTradePagePayRequest;
+import com.alipay.api.request.AlipayTradePrecreateRequest;
+
+import cn.hutool.extra.qrcode.QrCodeUtil;
 
 public class AlipayServiceImpl implements AlipayService {
 	
-	static boolean sandbox;
+	@Resource
+	private AlipayClient alipayClient;
 	
-	public AlipayServiceImpl(String appId, String merchantPrivateKey, String alipayPublicKey, boolean sandbox) {
-		AlipayConfig.app_id = appId;
-		AlipayConfig.merchant_private_key = merchantPrivateKey;
-		AlipayConfig.alipay_public_key = alipayPublicKey;
-		AlipayServiceImpl.sandbox = sandbox;
-	}
-
 	@Override
-	public String pay(String notify_url, String return_url, String out_trade_no, String subject, String body, String total_amount, String qr_pay_mode, Long qrcodeWidth) {
-		
-		//获得初始化的AlipayClient
-		AlipayClient alipayClient = new DefaultAlipayClient(sandbox?AlipayConfig.gatewayUrl_sandbox:AlipayConfig.gatewayUrl, AlipayConfig.app_id, AlipayConfig.merchant_private_key, "json", AlipayConfig.charset, AlipayConfig.alipay_public_key, AlipayConfig.sign_type);
-		
+	public String pagePay(String notify_url, String return_url, String out_trade_no, String subject, String total_amount) {
 		//设置请求参数
 		AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();
 		alipayRequest.setReturnUrl(return_url);
@@ -34,16 +26,8 @@ public class AlipayServiceImpl implements AlipayService {
 		pagePayModel.setOutTradeNo(out_trade_no);
 		pagePayModel.setTotalAmount(total_amount);
 		pagePayModel.setSubject(subject);
-		pagePayModel.setBody(body);
-		pagePayModel.setTimeoutExpress("30m");
+		pagePayModel.setTimeoutExpress("2h");
 		pagePayModel.setProductCode("FAST_INSTANT_TRADE_PAY");
-		if(StringUtils.hasText(qr_pay_mode)){
-			pagePayModel.setQrPayMode(qr_pay_mode);
-		}
-		if(qrcodeWidth!=null) {
-			pagePayModel.setQrcodeWidth(qrcodeWidth);
-		}
-		
 		
 		alipayRequest.setBizModel(pagePayModel);
 		
@@ -65,6 +49,30 @@ public class AlipayServiceImpl implements AlipayService {
 		
 		//输出
 		return result;
+	}
+	
+	@Override
+	public byte[] codePay(String notify_url, String out_trade_no, String subject, String total_amount, int width, int height) {
+
+		AlipayTradePrecreateRequest request = new AlipayTradePrecreateRequest();
+		request.setNotifyUrl(notify_url);
+		
+		AlipayTradePagePayModel pagePayModel = new AlipayTradePagePayModel();
+		pagePayModel.setOutTradeNo(out_trade_no);
+		pagePayModel.setTotalAmount(total_amount);
+		pagePayModel.setSubject(subject);
+		pagePayModel.setTimeoutExpress("2h");
+		
+		request.setBizModel(pagePayModel);
+		
+		
+		String result = null;
+		try {
+			result = alipayClient.execute(request).getQrCode();
+		} catch (AlipayApiException e) {
+		}
+		
+		return QrCodeUtil.generatePng(result, width, height);
 	}
 
 }

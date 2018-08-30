@@ -10,6 +10,10 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-autoconfigure</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>io.jee.alaska</groupId>
 			<artifactId>alaska-data-jpa-hibernate</artifactId>
 			<version>${project.version}</version>
@@ -18,6 +22,12 @@
 		<dependency>
 			<groupId>io.jee.alaska</groupId>
 			<artifactId>alaska-alibaba</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.jee.alaska</groupId>
+			<artifactId>alaska-pay</artifactId>
 			<version>${project.version}</version>
 			<scope>provided</scope>
 		</dependency>
