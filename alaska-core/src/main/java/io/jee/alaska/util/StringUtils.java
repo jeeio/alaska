@@ -15,9 +15,8 @@ public class StringUtils {
 	/**
 	 * <b>截取指定字节长度的字符串，不能返回半个汉字</b> 例如： 如果网页最多能显示17个汉字，那么 length 则为 34
 	 *
-	 * @param str
+	 * @param orignal
 	 * @param length
-	 * @return
 	 */
 	public static String getSubString(String orignal, int length) {
 		int count = 0;
@@ -43,7 +42,6 @@ public class StringUtils {
 	
 	/**
 	 * 短8位UUID生成
-	 * @return
 	 */
 	public static String shortUUIDGenerator() {
 		String[] chars = new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C",

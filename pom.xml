@@ -4,8 +4,12 @@
 
 	<groupId>io.jee.alaska</groupId>
 	<artifactId>alaska-parent</artifactId>
-	<version>3.0.0</version>
+	<version>3.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
+	
+	<name>alaska</name>
+	<url>https://github.com/jeeio/alaska</url>
+	<description>Alaska Java Tools</description>
 	
 	<parent>
         <groupId>org.springframework.boot</groupId>
@@ -13,6 +17,29 @@
 		<version>2.0.4.RELEASE</version>
         <relativePath/>
     </parent>
+    
+   	<licenses>
+		<license>
+			<name>The Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+ 
+	<developers>
+		<developer>
+			<name>Maohan Xia</name>
+			<email>dexter1217@live.cn</email>
+			<organization>jeeio</organization>
+			<organizationUrl>http://www.jee.io</organizationUrl>
+		</developer>
+	</developers>
+	
+	<scm>
+		<connection>https://github.com/jeeio/alaska.git</connection>
+		<developerConnection>https://github.com/jeeio/alaska.git</developerConnection>
+		<url>https://github.com/jeeio/alaska</url>
+	</scm>
+ 
 
     <dependencyManagement>
 		<dependencies>
@@ -44,26 +71,78 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<repositories>
-		<repository>
-			<id>jeeio-nexus</id>
-			<url>http://maven.jee.io/repository/maven-public/</url>
-		</repository>
-	</repositories>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>jeeio-nexus</id>
-			<url>http://maven.jee.io/repository/maven-public/</url>
-		</pluginRepository>
-	</pluginRepositories>
 	
+	<profiles>
+		<profile>
+			<id>sonatype-oss-release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<goals>
+									<goal>jar-no-fork</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+			            <configuration>
+			                <additionalparam>-Xdoclint:none</additionalparam>
+			            </configuration>
+					</plugin>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>sonatype-nexus-staging</serverId>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
+					
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 	<distributionManagement>
+		<snapshotRepository>
+			<id>sonatype-nexus-snapshots</id>
+			<name>Sonatype Nexus Snapshots</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
 		<repository>
-			<id>jeeio-nexus</id>
-			<name>releases</name>
-			<url>http://maven.jee.io/repository/maven-releases/</url>
+			<id>sonatype-nexus-staging</id>
+			<name>Nexus Release Repository</name>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
 	</distributionManagement>
 

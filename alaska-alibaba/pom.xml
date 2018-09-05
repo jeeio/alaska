@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>io.jee.alaska</groupId>
 		<artifactId>alaska-parent</artifactId>
-		<version>3.0.0</version>
+		<version>3.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>alaska-alibaba</artifactId>
 
@@ -18,11 +18,6 @@
 			<groupId>com.aliyun</groupId>
 			<artifactId>aliyun-java-sdk-dysmsapi</artifactId>
 			<version>1.0.0</version>
-		</dependency>
-		<dependency>
-		    <groupId>com.alipay</groupId>
-		    <artifactId>alipay-sdk-java</artifactId>
-		    <version>20171201160035</version>
 		</dependency>
 		<dependency>
 			<groupId>io.jee.alaska</groupId>

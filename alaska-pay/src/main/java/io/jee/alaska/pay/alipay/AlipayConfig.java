@@ -1,4 +1,4 @@
-﻿package io.jee.alaska.pay.alipay;
+package io.jee.alaska.pay.alipay;
 
 /* *
  *类名：AlipayConfig
@@ -12,30 +12,29 @@
 
 public class AlipayConfig {
 	
-//↓↓↓↓↓↓↓↓↓↓请在这里配置您的基本信息↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+	//↓↓↓↓↓↓↓↓↓↓请在这里配置您的基本信息↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
-	// 应用ID,您的APPID，收款账号既是您的APPID对应支付宝账号
-//	public static String app_id = "";
-	
-	// 商户私钥，您的PKCS8格式RSA2私钥
-//    public static String merchant_private_key = "";
-	
-	// 支付宝公钥,查看地址：https://openhome.alipay.com/platform/keyManage.htm 对应APPID下的支付宝公钥。
-//    public static String alipay_public_key = "";
+		// 应用ID,您的APPID，收款账号既是您的APPID对应支付宝账号
+//		public static String app_id = "";
+		
+		// 商户私钥，您的PKCS8格式RSA2私钥
+//	    public static String merchant_private_key = "";
+		
+		// 支付宝公钥,查看地址：https://openhome.alipay.com/platform/keyManage.htm 对应APPID下的支付宝公钥。
+//	    public static String alipay_public_key = "";
 
-	// 签名方式
-	public static String sign_type = "RSA2";
-	
-	// 字符编码格式
-	public static String charset = "utf-8";
-	
-	// 支付宝网关
-	public static String gatewayUrl = "https://openapi.alipay.com/gateway.do";
-	
-	public static String gatewayUrl_sandbox = "https://openapi.alipaydev.com/gateway.do";
-	
+		// 签名方式
+		public static String sign_type = "RSA2";
+		
+		// 字符编码格式
+		public static String charset = "utf-8";
+		
+		// 支付宝网关
+		public static String gatewayUrl = "https://openapi.alipay.com/gateway.do";
+		
+		public static String gatewayUrl_sandbox = "https://openapi.alipaydev.com/gateway.do";
+		
 
-//↑↑↑↑↑↑↑↑↑↑请在这里配置您的基本信息↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+	//↑↑↑↑↑↑↑↑↑↑请在这里配置您的基本信息↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
 
 }
-
