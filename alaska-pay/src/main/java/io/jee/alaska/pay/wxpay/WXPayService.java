@@ -7,7 +7,6 @@ public interface WXPayService {
 	 * @param notify_url 服务器异步通知页面路径
 	 * @param out_trade_no 商户订单号
 	 * @param subject 订单名称
-	 * @param body 订单描述
 	 * @param total_amount 付款金额
 	 * @return
 	 */
