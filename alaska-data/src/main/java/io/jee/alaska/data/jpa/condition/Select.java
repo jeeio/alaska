@@ -1,6 +1,7 @@
-package io.jee.alaska.data.jpa.hibernate.condition;
+package io.jee.alaska.data.jpa.condition;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -9,20 +10,34 @@ import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.TypedQuery;
 
-public class Count<T> {
+import org.hibernate.query.internal.AbstractProducedQuery;
+import org.springframework.util.CollectionUtils;
 
+
+public class Select<T> {
+	
 	private final EntityManager entityManager;
+	private final Class<T> clazz;
+	
 	private StringBuffer hql;
 	
 	private Where where = new Where();
+	private Order order = new Order();
+	private End end = new End();
+	
 	private Map<String, Object> param = new HashMap<>();
+	private Map<String, String> orderBy = new HashMap<>();
 	private AtomicInteger p = new AtomicInteger(0);
 	
-	public Count(EntityManager entityManager, Class<T> clazz) {
+	private boolean cacheable;
+	
+	public Select(boolean cacheable, EntityManager entityManager, Class<T> clazz) {
+		this.cacheable = cacheable;
 		this.entityManager = entityManager;
-		hql = new StringBuffer("select count(e) from " + clazz.getName() +" e");
+		this.clazz = clazz;
+		hql = new StringBuffer("select e from " + clazz.getName() +" e");
 	}
-
+	
 	/**
 	 * 起始方法，默认为=
 	 * @param key
@@ -46,7 +61,7 @@ public class Count<T> {
 			hql.append(" where e." + key + " is null");
 		}else if(operation == Operation.NEQ && value == null){
 			hql.append(" where e." + key + " is not null");
-		}else if(operation == Operation.IN){
+		}else if(operation == Operation.IN || operation == Operation.NIN){
 			hql.append(" where e." + key + operation.getKeyword() + "(:" +random+")");
 		}else{
 			hql.append(" where e." + key + operation.getKeyword() + ":" + random);
@@ -55,6 +70,14 @@ public class Count<T> {
 			param.put(random, value);
 		}
 		return where;
+	}
+	
+	public Order order(){
+		return order;
+	}
+	
+	public End end(){
+		return end;
 	}
 	
 	public class Where {
@@ -82,7 +105,7 @@ public class Count<T> {
 				hql.append(" and e." + key + " is null");
 			}else if(operation == Operation.NEQ && value == null){
 				hql.append(" and e." + key + " is not null");
-			}else if(operation == Operation.IN){
+			}else if(operation == Operation.IN || operation == Operation.NIN){
 				hql.append(" and e." + key + operation.getKeyword() + "(:" +random+")");
 			}else{
 				hql.append(" and e." + key + operation.getKeyword() + ":" + random);
@@ -116,7 +139,7 @@ public class Count<T> {
 				hql.append(" or e." + key + " is null");
 			}else if(operation == Operation.NEQ && value == null){
 				hql.append(" or e." + key + " is not null");
-			}else if(operation == Operation.IN){
+			}else if(operation == Operation.IN || operation == Operation.NIN){
 				hql.append(" or e." + key + operation.getKeyword() + "(:" +random+")");
 			}else{
 				hql.append(" or e." + key + operation.getKeyword() + ":" + random);
@@ -127,22 +150,107 @@ public class Count<T> {
 			return this;
 		}
 		
-		public long end(){
-			return (long) this.end(null);
+		public Order order(){
+			return order;
 		}
 		
-		public long end(LockModeType lockMode){
-			TypedQuery<Long> query = entityManager.createQuery(hql.toString(), Long.class);
+		public End end(){
+			return end;
+		}
+	}
+	
+	public class Order {
+		
+		public Order asc(String key){
+			orderBy.put(key, "ASC");
+			return this;
+		}
+		
+		public Order desc(String key){
+			orderBy.put(key, "DESC");
+			return this;
+		}
+		
+		public Order on(String key, String type){
+			orderBy.put(key, type);
+			return this;
+		}
+		
+		public End end(){
+			return end;
+		}
+		
+	}
+	
+	public class End {
+		
+		private <X> TypedQuery<X> common(String field, Class<X> clazz){
+			
+			if(!CollectionUtils.isEmpty(orderBy)){
+				hql.append(" order by ");
+				boolean hasFirst = true;
+				for (Entry<String, String> entry : orderBy.entrySet()) {
+					if(hasFirst){
+						hql.append(entry.getKey()+" "+entry.getValue());
+						hasFirst = false;
+					}else{
+						hql.append(", "+entry.getKey()+" "+entry.getValue());
+					}
+				}
+			}
+			
+			if(field!=null){
+				hql.replace(7, 8, "e."+field);
+			}
+			TypedQuery<X> query = entityManager.createQuery(hql.toString(), clazz);
+			if(cacheable){
+				query.setHint("org.hibernate.cacheable", true);
+			}
 			for (Entry<String,Object> entry : param.entrySet()) {
 				Object value = entry.getValue();
 				query.setParameter(entry.getKey(), value);
 			}
+			return query;
+		}
+		
+		public T unique(){
+			return this.unique(null);
+		}
+		
+		public <P> P uniqueField(String field, Class<P> clazz){
+			TypedQuery<P> query = common(field, clazz);
+			return AbstractProducedQuery.uniqueElement(query.getResultList());
+		}
+		
+		public T unique(LockModeType lockMode){
+			TypedQuery<T> query = common(null, clazz);
 			if(lockMode!=null){
 				query.setLockMode(lockMode);
 			}
-			return query.getSingleResult();
+			return AbstractProducedQuery.uniqueElement(query.getResultList());
+		}
+		
+		public List<T> list(){
+			TypedQuery<T> query = common(null, clazz);
+			return query.getResultList();
+		}
+		
+		public <P> List<P> listField(String field, Class<P> clazz){
+			TypedQuery<P> query = common(field, clazz);
+			return query.getResultList();
+		}
+		
+		public List<T> list(int size){
+			return this.list(size, null);
+		}
+		
+		public List<T> list(int size, LockModeType lockMode){
+			TypedQuery<T> query = common(null, clazz).setFirstResult(0).setMaxResults(size);
+			if(lockMode!=null){
+				query.setLockMode(lockMode);
+			}
+			return query.getResultList();
 		}
 	}
-	
 
 }

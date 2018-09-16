@@ -1,4 +1,4 @@
-package io.jee.alaska.data.jpa.hibernate.condition;
+package io.jee.alaska.data.jpa.condition;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,91 +6,55 @@ import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import javax.persistence.LockModeType;
+import javax.persistence.TypedQuery;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+public class Count<T> {
 
-public class Update<T> {
-	
-	protected final Log logger = LogFactory.getLog(getClass());
-	
 	private final EntityManager entityManager;
 	private StringBuffer hql;
 	
-	private Set set = new Set();
 	private Where where = new Where();
 	private Map<String, Object> param = new HashMap<>();
 	private AtomicInteger p = new AtomicInteger(0);
 	
-	
-	public Update(EntityManager entityManager, Class<T> clazz) {
+	public Count(EntityManager entityManager, Class<T> clazz) {
 		this.entityManager = entityManager;
-		hql = new StringBuffer("update " + clazz.getName() +" e");
+		hql = new StringBuffer("select count(e) from " + clazz.getName() +" e");
+	}
+
+	/**
+	 * 起始方法，默认为=
+	 * @param key
+	 * @param value
+	 * @return
+	 */
+	public Where where(String key, Object value){
+		return where(key, Operation.EQ, value);
 	}
 	
-	public Set set(String key, Object value){
-		if(value != null){
-			String random = "p"+p.incrementAndGet();
-			hql.append(" set e." + key + " = :" + random);
-			param.put(random, value);
+	/**
+	 * 起始方法
+	 * @param key
+	 * @param operation
+	 * @param value
+	 * @return
+	 */
+	public Where where(String key, Operation operation, Object value){
+		String random = "p"+p.incrementAndGet();
+		if(operation == Operation.EQ && value == null){
+			hql.append(" where e." + key + " is null");
+		}else if(operation == Operation.NEQ && value == null){
+			hql.append(" where e." + key + " is not null");
+		}else if(operation == Operation.IN){
+			hql.append(" where e." + key + operation.getKeyword() + "(:" +random+")");
 		}else{
-			hql.append(" set e." + key + " = null");
+			hql.append(" where e." + key + operation.getKeyword() + ":" + random);
 		}
-		return set;
-	}
-	
-	public class Set {
-		
-		public Set put(String key, Object value){
-			if(value != null){
-				String random = "p"+p.incrementAndGet();
-				hql.append(", e." + key + " = :" + random);
-				param.put(random, value);
-			}else{
-				hql.append(", e." + key + " = null");
-			}
-			return this;
+		if(value!=null){
+			param.put(random, value);
 		}
-		
-		public int end(){
-			return where.end();
-		}
-		
-		/**
-		 * 起始方法，默认为=
-		 * @param key
-		 * @param value
-		 * @return
-		 */
-		public Where where(String key, Object value){
-			return where(key, Operation.EQ, value);
-		}
-		
-		/**
-		 * 起始方法
-		 * @param key
-		 * @param operation
-		 * @param value
-		 * @return
-		 */
-		public Where where(String key, Operation operation, Object value){
-			String random = "p"+p.incrementAndGet();
-			if(operation == Operation.EQ && value == null){
-				hql.append(" where e." + key + " is null");
-			}else if(operation == Operation.NEQ && value == null){
-				hql.append(" where e." + key + " is not null");
-			}else if(operation == Operation.IN || operation == Operation.NIN){
-				hql.append(" where e." + key + operation.getKeyword() + "(:" +random+")");
-			}else{
-				hql.append(" where e." + key + operation.getKeyword() + ":" + random);
-			}
-			if(value!=null){
-				param.put(random, value);
-			}
-			return where;
-		}
-		
+		return where;
 	}
 	
 	public class Where {
@@ -118,7 +82,7 @@ public class Update<T> {
 				hql.append(" and e." + key + " is null");
 			}else if(operation == Operation.NEQ && value == null){
 				hql.append(" and e." + key + " is not null");
-			}else if(operation == Operation.IN || operation == Operation.NIN){
+			}else if(operation == Operation.IN){
 				hql.append(" and e." + key + operation.getKeyword() + "(:" +random+")");
 			}else{
 				hql.append(" and e." + key + operation.getKeyword() + ":" + random);
@@ -152,7 +116,7 @@ public class Update<T> {
 				hql.append(" or e." + key + " is null");
 			}else if(operation == Operation.NEQ && value == null){
 				hql.append(" or e." + key + " is not null");
-			}else if(operation == Operation.IN || operation == Operation.NIN){
+			}else if(operation == Operation.IN){
 				hql.append(" or e." + key + operation.getKeyword() + "(:" +random+")");
 			}else{
 				hql.append(" or e." + key + operation.getKeyword() + ":" + random);
@@ -163,17 +127,22 @@ public class Update<T> {
 			return this;
 		}
 		
-		public int end(){
-			Query query = entityManager.createQuery(hql.toString());
-			if(logger.isDebugEnabled()){
-				logger.debug(hql.toString()+" "+param);
-			}
+		public long end(){
+			return (long) this.end(null);
+		}
+		
+		public long end(LockModeType lockMode){
+			TypedQuery<Long> query = entityManager.createQuery(hql.toString(), Long.class);
 			for (Entry<String,Object> entry : param.entrySet()) {
 				Object value = entry.getValue();
 				query.setParameter(entry.getKey(), value);
 			}
-			return query.executeUpdate();
+			if(lockMode!=null){
+				query.setLockMode(lockMode);
+			}
+			return query.getSingleResult();
 		}
 	}
 	
+
 }

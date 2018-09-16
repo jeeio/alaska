@@ -1,4 +1,4 @@
-package io.jee.alaska.data.jpa.hibernate.identifier;
+package io.jee.alaska.data.hibernate.identifier;
 
 import java.io.Serializable;
 

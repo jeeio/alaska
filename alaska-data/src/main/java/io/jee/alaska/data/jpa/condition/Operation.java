@@ -1,4 +1,4 @@
-package io.jee.alaska.data.jpa.hibernate.condition;
+package io.jee.alaska.data.jpa.condition;
 
 public enum Operation {
 	/**

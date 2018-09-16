@@ -149,7 +149,6 @@
 	<modules>
 		<module>alaska-core</module>
 		<module>alaska-alibaba</module>
-		<module>alaska-data-jpa-hibernate</module>
 		<module>alaska-data</module>
 		<module>alaska-firewall</module>
 		<module>alaska-boot-autoconfigure</module>
@@ -165,6 +164,10 @@
 		    <groupId>cn.hutool</groupId>
 		    <artifactId>hutool-all</artifactId>
 		    <version>4.1.9</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-autoconfigure</artifactId>
 		</dependency>
 	</dependencies>
 </project>

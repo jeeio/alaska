@@ -1,41 +1,31 @@
-package io.jee.alaska.data.jpa.hibernate.condition;
+package io.jee.alaska.data.jpa.condition;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.persistence.EntityManager;
-import javax.persistence.LockModeType;
-import javax.persistence.TypedQuery;
+import javax.persistence.Query;
 
-import org.hibernate.query.internal.AbstractProducedQuery;
-import org.springframework.util.CollectionUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-
-public class Select<T> {
+public class Delete<T> {
+	
+	protected final Log logger = LogFactory.getLog(getClass());
 	
 	private final EntityManager entityManager;
-	private final Class<T> clazz;
-	
 	private StringBuffer hql;
 	
 	private Where where = new Where();
-	private Order order = new Order();
-	private End end = new End();
-	
 	private Map<String, Object> param = new HashMap<>();
-	private Map<String, String> orderBy = new HashMap<>();
 	private AtomicInteger p = new AtomicInteger(0);
 	
-	private boolean cacheable;
 	
-	public Select(boolean cacheable, EntityManager entityManager, Class<T> clazz) {
-		this.cacheable = cacheable;
+	public Delete(EntityManager entityManager, Class<T> clazz) {
 		this.entityManager = entityManager;
-		this.clazz = clazz;
-		hql = new StringBuffer("select e from " + clazz.getName() +" e");
+		hql = new StringBuffer("delete " + clazz.getName() +" e");
 	}
 	
 	/**
@@ -72,12 +62,8 @@ public class Select<T> {
 		return where;
 	}
 	
-	public Order order(){
-		return order;
-	}
-	
-	public End end(){
-		return end;
+	public int end(){
+		return where.end();
 	}
 	
 	public class Where {
@@ -150,107 +136,17 @@ public class Select<T> {
 			return this;
 		}
 		
-		public Order order(){
-			return order;
-		}
-		
-		public End end(){
-			return end;
-		}
-	}
-	
-	public class Order {
-		
-		public Order asc(String key){
-			orderBy.put(key, "ASC");
-			return this;
-		}
-		
-		public Order desc(String key){
-			orderBy.put(key, "DESC");
-			return this;
-		}
-		
-		public Order on(String key, String type){
-			orderBy.put(key, type);
-			return this;
-		}
-		
-		public End end(){
-			return end;
-		}
-		
-	}
-	
-	public class End {
-		
-		private <X> TypedQuery<X> common(String field, Class<X> clazz){
-			
-			if(!CollectionUtils.isEmpty(orderBy)){
-				hql.append(" order by ");
-				boolean hasFirst = true;
-				for (Entry<String, String> entry : orderBy.entrySet()) {
-					if(hasFirst){
-						hql.append(entry.getKey()+" "+entry.getValue());
-						hasFirst = false;
-					}else{
-						hql.append(", "+entry.getKey()+" "+entry.getValue());
-					}
-				}
-			}
-			
-			if(field!=null){
-				hql.replace(7, 8, "e."+field);
-			}
-			TypedQuery<X> query = entityManager.createQuery(hql.toString(), clazz);
-			if(cacheable){
-				query.setHint("org.hibernate.cacheable", true);
+		public int end(){
+			Query query = entityManager.createQuery(hql.toString());
+			if(logger.isDebugEnabled()){
+				logger.debug(hql.toString()+" "+param);
 			}
 			for (Entry<String,Object> entry : param.entrySet()) {
 				Object value = entry.getValue();
 				query.setParameter(entry.getKey(), value);
 			}
-			return query;
-		}
-		
-		public T unique(){
-			return this.unique(null);
-		}
-		
-		public <P> P uniqueField(String field, Class<P> clazz){
-			TypedQuery<P> query = common(field, clazz);
-			return AbstractProducedQuery.uniqueElement(query.getResultList());
-		}
-		
-		public T unique(LockModeType lockMode){
-			TypedQuery<T> query = common(null, clazz);
-			if(lockMode!=null){
-				query.setLockMode(lockMode);
-			}
-			return AbstractProducedQuery.uniqueElement(query.getResultList());
-		}
-		
-		public List<T> list(){
-			TypedQuery<T> query = common(null, clazz);
-			return query.getResultList();
-		}
-		
-		public <P> List<P> listField(String field, Class<P> clazz){
-			TypedQuery<P> query = common(field, clazz);
-			return query.getResultList();
-		}
-		
-		public List<T> list(int size){
-			return this.list(size, null);
-		}
-		
-		public List<T> list(int size, LockModeType lockMode){
-			TypedQuery<T> query = common(null, clazz).setFirstResult(0).setMaxResults(size);
-			if(lockMode!=null){
-				query.setLockMode(lockMode);
-			}
-			return query.getResultList();
+			return query.executeUpdate();
 		}
 	}
-
+	
 }
