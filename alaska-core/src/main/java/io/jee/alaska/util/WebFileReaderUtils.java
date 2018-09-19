@@ -114,7 +114,6 @@ public class WebFileReaderUtils {
 	    response.setDateHeader("Expires", System.currentTimeMillis() + EXPIRE_TIME);
 //	    response.setContentType(Files.probeContentType(path));
 	    response.setContentType(new MimetypesFileTypeMap().getContentType(path.toFile()));
-	    System.err.println(Files.probeContentType(path));
 	    response.setContentLengthLong(contentLength);
 	    if(StringUtils.hasText(range)) {
 	    	response.setHeader("Content-Range", String.format("bytes %s-%s/%s", start, end, length));
