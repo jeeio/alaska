@@ -11,6 +11,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.util.StringUtils;
@@ -43,22 +44,21 @@ public class WebFileReaderUtils {
 
 	    long contentLength = end - start + 1;
 	    
-	    String userAgent = request.getHeader("User-Agent").toLowerCase();
-
 	    response.reset();
 	    response.setBufferSize(BUFFER_LENGTH);
 	    response.setHeader("Accept-Ranges", "bytes");
 	    response.setDateHeader("Last-Modified", Files.getLastModifiedTime(path).toMillis());
 	    response.setDateHeader("Expires", System.currentTimeMillis() + EXPIRE_TIME);
-	    response.setContentType(Files.probeContentType(path));
-	    response.setHeader("Content-Range", String.format("bytes %s-%s/%s", start, end, length));
+//	    response.setContentType(Files.probeContentType(path));
+	    response.setContentType(new MimetypesFileTypeMap().getContentType(path.toFile()));
 	    response.setContentLengthLong(contentLength);
-	    if(StringUtils.hasText(range) || userAgent.indexOf("safari")>-1) {
+	    if(StringUtils.hasText(range)) {
+	    	response.setHeader("Content-Range", String.format("bytes %s-%s/%s", start, end, length));
 	    	response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
 	    }
 
 	    int bytesRead;
-//	    int bytesLeft = contentLength;
+	    int bytesLeft = (int) contentLength;
 	    ByteBuffer buffer = ByteBuffer.allocate(BUFFER_LENGTH);
 
 	    try (SeekableByteChannel input = Files.newByteChannel(path, StandardOpenOption.READ);
@@ -66,15 +66,15 @@ public class WebFileReaderUtils {
 
 	    	input.position(start);
 
-//	      while ((bytesRead = input.read(buffer)) != -1 && bytesLeft > 0) {
-//	        buffer.clear();
-//	        output.write(buffer.array(), 0, bytesLeft < bytesRead ? bytesLeft : bytesRead);
-//	        bytesLeft -= bytesRead;
-//	      }
-			while ((bytesRead = input.read(buffer)) != -1) {
-				buffer.clear();
-				output.write(buffer.array(), 0, bytesRead);
-			}
+	      while ((bytesRead = input.read(buffer)) != -1 && bytesLeft > 0) {
+	        buffer.clear();
+	        output.write(buffer.array(), 0, bytesLeft < bytesRead ? bytesLeft : bytesRead);
+	        bytesLeft -= bytesRead;
+	      }
+//			while ((bytesRead = input.read(buffer)) != -1) {
+//				buffer.clear();
+//				output.write(buffer.array(), 0, bytesRead);
+//			}
 	    }catch (IOException e) {
 		}
 	}
@@ -112,14 +112,17 @@ public class WebFileReaderUtils {
 	    response.setHeader("Accept-Ranges", "bytes");
 	    response.setDateHeader("Last-Modified", Files.getLastModifiedTime(path).toMillis());
 	    response.setDateHeader("Expires", System.currentTimeMillis() + EXPIRE_TIME);
-	    response.setContentType(Files.probeContentType(path));
-	    response.setHeader("Content-Range", String.format("bytes %s-%s/%s", start, end, length));
+//	    response.setContentType(Files.probeContentType(path));
+	    response.setContentType(new MimetypesFileTypeMap().getContentType(path.toFile()));
+	    System.err.println(Files.probeContentType(path));
 	    response.setContentLengthLong(contentLength);
-	    if(StringUtils.hasText(range) || userAgent.indexOf("safari")>-1) {
+	    if(StringUtils.hasText(range)) {
+	    	response.setHeader("Content-Range", String.format("bytes %s-%s/%s", start, end, length));
 	    	response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
 	    }
 
 	    int bytesRead;
+	    int bytesLeft = (int) contentLength;
 	    ByteBuffer buffer = ByteBuffer.allocate(BUFFER_LENGTH);
 
 	    try (SeekableByteChannel input = Files.newByteChannel(path, StandardOpenOption.READ);
@@ -127,10 +130,11 @@ public class WebFileReaderUtils {
 
 	    	input.position(start);
 
-			while ((bytesRead = input.read(buffer)) != -1) {
-				buffer.clear();
-				output.write(buffer.array(), 0, bytesRead);
-			}
+	    	while ((bytesRead = input.read(buffer)) != -1 && bytesLeft > 0) {
+		        buffer.clear();
+		        output.write(buffer.array(), 0, bytesLeft < bytesRead ? bytesLeft : bytesRead);
+		        bytesLeft -= bytesRead;
+		      }
 	    }catch (IOException e) {
 		}
 	}
@@ -144,22 +148,17 @@ public class WebFileReaderUtils {
 	    response.setBufferSize(BUFFER_LENGTH);
 	    response.setDateHeader("Last-Modified", Files.getLastModifiedTime(path).toMillis());
 	    response.setDateHeader("Expires", System.currentTimeMillis() + EXPIRE_TIME);
-	    response.setContentType(Files.probeContentType(path));
+//	    response.setContentType(Files.probeContentType(path));
+	    response.setContentType(new MimetypesFileTypeMap().getContentType(path.toFile()));
 	    response.setContentLengthLong(Files.size(path));
 
 	    int bytesRead;
-//	    int bytesLeft = contentLength;
 	    ByteBuffer buffer = ByteBuffer.allocate(BUFFER_LENGTH);
 
 	    try (SeekableByteChannel input = Files.newByteChannel(path, StandardOpenOption.READ);
 	    		OutputStream output = response.getOutputStream()) {
 
 
-//	      while ((bytesRead = input.read(buffer)) != -1 && bytesLeft > 0) {
-//	        buffer.clear();
-//	        output.write(buffer.array(), 0, bytesLeft < bytesRead ? bytesLeft : bytesRead);
-//	        bytesLeft -= bytesRead;
-//	      }
 			while ((bytesRead = input.read(buffer)) != -1) {
 				buffer.clear();
 				output.write(buffer.array(), 0, bytesRead);
