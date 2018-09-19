@@ -58,7 +58,7 @@ public class WebFileReaderUtils {
 	    }
 
 	    int bytesRead;
-	    int bytesLeft = (int) contentLength;
+	    long bytesLeft = contentLength;
 	    ByteBuffer buffer = ByteBuffer.allocate(BUFFER_LENGTH);
 
 	    try (SeekableByteChannel input = Files.newByteChannel(path, StandardOpenOption.READ);
@@ -68,7 +68,7 @@ public class WebFileReaderUtils {
 
 	      while ((bytesRead = input.read(buffer)) != -1 && bytesLeft > 0) {
 	        buffer.clear();
-	        output.write(buffer.array(), 0, bytesLeft < bytesRead ? bytesLeft : bytesRead);
+	        output.write(buffer.array(), 0, bytesLeft < bytesRead ? (int) bytesLeft : bytesRead);
 	        bytesLeft -= bytesRead;
 	      }
 //			while ((bytesRead = input.read(buffer)) != -1) {
@@ -122,7 +122,7 @@ public class WebFileReaderUtils {
 	    }
 
 	    int bytesRead;
-	    int bytesLeft = (int) contentLength;
+	    long bytesLeft = contentLength;
 	    ByteBuffer buffer = ByteBuffer.allocate(BUFFER_LENGTH);
 
 	    try (SeekableByteChannel input = Files.newByteChannel(path, StandardOpenOption.READ);
@@ -132,7 +132,7 @@ public class WebFileReaderUtils {
 
 	    	while ((bytesRead = input.read(buffer)) != -1 && bytesLeft > 0) {
 		        buffer.clear();
-		        output.write(buffer.array(), 0, bytesLeft < bytesRead ? bytesLeft : bytesRead);
+		        output.write(buffer.array(), 0, bytesLeft < bytesRead ? (int) bytesLeft : bytesRead);
 		        bytesLeft -= bytesRead;
 		      }
 	    }catch (IOException e) {
