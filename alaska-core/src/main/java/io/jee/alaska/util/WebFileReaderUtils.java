@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.WebRequest;
 
-public class WebFileDownloadUtils {
+public class WebFileReaderUtils {
 	
 	private static final int BUFFER_LENGTH = 1024 * 16;
 	private static final long EXPIRE_TIME = 1000 * 60 * 60 * 24;
@@ -42,6 +42,8 @@ public class WebFileDownloadUtils {
 	    }
 
 	    long contentLength = end - start + 1;
+	    
+	    String userAgent = request.getHeader("User-Agent").toLowerCase();
 
 	    response.reset();
 	    response.setBufferSize(BUFFER_LENGTH);
@@ -51,7 +53,7 @@ public class WebFileDownloadUtils {
 	    response.setContentType(Files.probeContentType(path));
 	    response.setHeader("Content-Range", String.format("bytes %s-%s/%s", start, end, length));
 	    response.setContentLengthLong(contentLength);
-	    if(StringUtils.hasText(range)) {
+	    if(StringUtils.hasText(range) || userAgent.indexOf("safari")>-1) {
 	    	response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
 	    }
 
@@ -101,7 +103,7 @@ public class WebFileDownloadUtils {
 	    response.reset();
 	    response.setBufferSize(BUFFER_LENGTH);
 		String userAgent = request.getHeader("User-Agent").toLowerCase();
-		if (userAgent.indexOf("firefox") > 0) {
+		if (userAgent.indexOf("firefox") > -1) {
 			name = new String(name.getBytes("UTF-8"), "iso-8859-1");
 		}else {
 			name = URLEncoder.encode(name, "UTF-8");
@@ -113,7 +115,7 @@ public class WebFileDownloadUtils {
 	    response.setContentType(Files.probeContentType(path));
 	    response.setHeader("Content-Range", String.format("bytes %s-%s/%s", start, end, length));
 	    response.setContentLengthLong(contentLength);
-	    if(StringUtils.hasText(range)) {
+	    if(StringUtils.hasText(range) || userAgent.indexOf("safari")>-1) {
 	    	response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
 	    }
 
