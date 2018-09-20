@@ -14,7 +14,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 
-public class AESUtil {
+public class AESUtils {
 
 	private static final String IV_STRING = "A-16-Byte-String";
 	private static final String charset = "UTF-8";
