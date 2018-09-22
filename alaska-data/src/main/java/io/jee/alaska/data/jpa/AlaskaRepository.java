@@ -20,6 +20,8 @@ public interface AlaskaRepository<T, ID extends Serializable> extends JpaReposit
 	
 	T findOne(ID id, LockModeType lockMode);
 	
+	T update(ID id, String key, Object value);
+	
 	Select<T> select();
 	
 	Select<T> select(boolean cacheable);

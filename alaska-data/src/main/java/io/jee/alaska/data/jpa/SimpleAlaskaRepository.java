@@ -1,12 +1,15 @@
 package io.jee.alaska.data.jpa;
 
+import java.beans.PropertyDescriptor;
 import java.io.Serializable;
+import java.lang.reflect.Method;
 
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import io.jee.alaska.data.jpa.condition.Count;
 import io.jee.alaska.data.jpa.condition.Delete;
@@ -33,6 +36,21 @@ public class SimpleAlaskaRepository<T, ID extends Serializable> extends SimpleJp
 	@Override
 	public T findOne(ID id, LockModeType lockMode) {
 		return entityManager.find(domainClass, id, lockMode);
+	}
+	
+	@Override
+	@Transactional
+	public T update(ID id, String key, Object value) {
+		T t = findById(id).get();
+		try {
+			PropertyDescriptor descriptor = new PropertyDescriptor(key, domainClass);
+			Method set = descriptor.getWriteMethod();
+			set.invoke(t, value);
+		} catch (Exception e) {
+			throw new RuntimeException(e.getMessage());
+		}
+		save(t);
+		return null;
 	}
 
 	@Override
