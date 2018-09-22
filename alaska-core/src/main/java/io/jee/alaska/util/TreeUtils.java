@@ -7,7 +7,7 @@ import org.springframework.util.CollectionUtils;
 
 import io.jee.alaska.bean.BaseTree;
 
-public class TreeUtil {
+public class TreeUtils {
 	
 	/**
 	 * 普通结构转换成树形结构
