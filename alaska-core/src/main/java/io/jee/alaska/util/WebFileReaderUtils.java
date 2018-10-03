@@ -19,7 +19,7 @@ import org.springframework.web.context.request.WebRequest;
 
 public class WebFileReaderUtils {
 	
-	private static final int BUFFER_LENGTH = 1024 * 32;
+	private static final int BUFFER_LENGTH = 1024 * 4;
 	private static final long EXPIRE_TIME = 1000 * 60 * 60 * 24;
 	private static final Pattern RANGE_PATTERN = Pattern.compile("bytes=(?<start>\\d*)-(?<end>\\d*)");
 	
@@ -33,13 +33,13 @@ public class WebFileReaderUtils {
 	    Matcher matcher = RANGE_PATTERN.matcher(range);
 
 	    if (matcher.matches()) {
-	      String startGroup = matcher.group("start");
-	      start = startGroup.isEmpty() ? start : Long.valueOf(startGroup);
-	      start = start < 0 ? 0 : start;
-
-	      String endGroup = matcher.group("end");
-	      end = endGroup.isEmpty() ? end : Long.valueOf(endGroup);
-	      end = end > length - 1 ? length - 1 : end;
+			String startGroup = matcher.group("start");
+			start = startGroup.isEmpty() ? start : Long.valueOf(startGroup);
+			start = start < 0 ? 0 : start;
+			
+			String endGroup = matcher.group("end");
+			end = endGroup.isEmpty() ? end : Long.valueOf(endGroup);
+			end = end > length - 1 ? length - 1 : end;
 	    }
 
 	    long contentLength = end - start + 1;
@@ -61,21 +61,26 @@ public class WebFileReaderUtils {
 	    long bytesLeft = contentLength;
 	    ByteBuffer buffer = ByteBuffer.allocate(BUFFER_LENGTH);
 
-	    try (SeekableByteChannel input = Files.newByteChannel(path, StandardOpenOption.READ);
-	    		OutputStream output = response.getOutputStream()) {
+	    SeekableByteChannel input = Files.newByteChannel(path, StandardOpenOption.READ);
+		OutputStream output = response.getOutputStream();
+	    try {
 
 	    	input.position(start);
 
-	      while ((bytesRead = input.read(buffer)) != -1 && bytesLeft > 0) {
-	        buffer.clear();
-	        output.write(buffer.array(), 0, bytesLeft < bytesRead ? (int) bytesLeft : bytesRead);
-	        bytesLeft -= bytesRead;
-	      }
+	    	while ((bytesRead = input.read(buffer)) != -1 && bytesLeft > 0) {
+		        buffer.clear();
+		        output.write(buffer.array(), 0, bytesLeft < bytesRead ? (int) bytesLeft : bytesRead);
+		        bytesLeft -= bytesRead;
+	    	}
 //			while ((bytesRead = input.read(buffer)) != -1) {
 //				buffer.clear();
 //				output.write(buffer.array(), 0, bytesRead);
 //			}
 	    }catch (IOException e) {
+		}finally {
+			input.close();
+			output.flush();
+			output.close();
 		}
 	}
 	
@@ -89,13 +94,13 @@ public class WebFileReaderUtils {
 	    Matcher matcher = RANGE_PATTERN.matcher(range);
 
 	    if (matcher.matches()) {
-	      String startGroup = matcher.group("start");
-	      start = startGroup.isEmpty() ? start : Long.valueOf(startGroup);
-	      start = start < 0 ? 0 : start;
-
-	      String endGroup = matcher.group("end");
-	      end = endGroup.isEmpty() ? end : Long.valueOf(endGroup);
-	      end = end > length - 1 ? length - 1 : end;
+		    String startGroup = matcher.group("start");
+		    start = startGroup.isEmpty() ? start : Long.valueOf(startGroup);
+		    start = start < 0 ? 0 : start;
+	
+		    String endGroup = matcher.group("end");
+		    end = endGroup.isEmpty() ? end : Long.valueOf(endGroup);
+		    end = end > length - 1 ? length - 1 : end;
 	    }
 
 	    long contentLength = end - start + 1;
@@ -124,8 +129,9 @@ public class WebFileReaderUtils {
 	    long bytesLeft = contentLength;
 	    ByteBuffer buffer = ByteBuffer.allocate(BUFFER_LENGTH);
 
-	    try (SeekableByteChannel input = Files.newByteChannel(path, StandardOpenOption.READ);
-	    		OutputStream output = response.getOutputStream()) {
+	    SeekableByteChannel input = Files.newByteChannel(path, StandardOpenOption.READ);
+		OutputStream output = response.getOutputStream();
+	    try {
 
 	    	input.position(start);
 
@@ -133,8 +139,12 @@ public class WebFileReaderUtils {
 		        buffer.clear();
 		        output.write(buffer.array(), 0, bytesLeft < bytesRead ? (int) bytesLeft : bytesRead);
 		        bytesLeft -= bytesRead;
-		      }
+		    }
 	    }catch (IOException e) {
+		}finally {
+			input.close();
+			output.flush();
+			output.close();
 		}
 	}
 	
@@ -154,15 +164,18 @@ public class WebFileReaderUtils {
 	    int bytesRead;
 	    ByteBuffer buffer = ByteBuffer.allocate(BUFFER_LENGTH);
 
-	    try (SeekableByteChannel input = Files.newByteChannel(path, StandardOpenOption.READ);
-	    		OutputStream output = response.getOutputStream()) {
-
-
+	    SeekableByteChannel input = Files.newByteChannel(path, StandardOpenOption.READ);
+		OutputStream output = response.getOutputStream();
+	    try {
 			while ((bytesRead = input.read(buffer)) != -1) {
 				buffer.clear();
 				output.write(buffer.array(), 0, bytesRead);
 			}
 	    }catch (IOException e) {
+		}finally {
+			input.close();
+			output.flush();
+			output.close();
 		}
 	}
 
