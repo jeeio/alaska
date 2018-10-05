@@ -1,21 +1,26 @@
 package io.jee.alaska.resumable.js;
 
 import java.io.File;
-import java.util.HashSet;
+import java.io.Serializable;
+import java.util.Set;
 
 /**
  * by fanxu
  */
-public class ResumableInfo {
-
-    public int      resumableChunkSize;
+public class ResumableInfo implements Serializable {
+	
+	private static final long serialVersionUID = 5022483092054440880L;
+	public int      resumableChunkSize;
     public long     resumableTotalSize;
     public String   resumableIdentifier;
     public String   resumableFilename;
     public String   resumableRelativePath;
 
-    public static class ResumableChunkNumber {
-        public ResumableChunkNumber(int number) {
+    public static class ResumableChunkNumber implements Serializable {
+       
+		private static final long serialVersionUID = -5707958886245824896L;
+
+		public ResumableChunkNumber(int number) {
             this.number = number;
         }
 
@@ -34,8 +39,6 @@ public class ResumableInfo {
     }
 
     //Chunks uploaded
-    public HashSet<ResumableChunkNumber> uploadedChunks = new HashSet<ResumableChunkNumber>();
-
     public String resumableFilePath;
 
     public boolean vaild(){
@@ -48,7 +51,7 @@ public class ResumableInfo {
             return true;
         }
     }
-    public boolean checkIfUploadFinished() {
+    public boolean checkIfUploadFinished(Set<ResumableChunkNumber> uploadedChunks) {
         //check if upload finished
         int count = (int) Math.ceil(((double) resumableTotalSize) / ((double) resumableChunkSize));
         for(int i = 1; i < count; i ++) {

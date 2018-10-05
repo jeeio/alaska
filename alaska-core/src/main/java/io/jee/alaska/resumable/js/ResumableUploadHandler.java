@@ -4,25 +4,43 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.data.redis.core.BoundSetOperations;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
+
+import io.jee.alaska.resumable.js.ResumableInfo.ResumableChunkNumber;
 
 /**
  *
  * using Resumable.js to upload files.
  *
  */
+@Component
 public class ResumableUploadHandler {
 	
 	private String uploadDir = "upload_dir";
+	@Resource
+	private ResumableInfoStorage resumableInfoStorage;
+	@Resource
+	private RedisTemplate<String, ResumableChunkNumber> redisTemplate;
 	
-	public ResumableUploadHandler(String uploadDir) {
+    public String getUploadDir() {
+		return uploadDir;
+	}
+
+	public void setUploadDir(String uploadDir) {
 		this.uploadDir = uploadDir;
 	}
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int resumableChunkNumber        = getResumableChunkNumber(request);
 
         ResumableInfo info = getResumableInfo(request);
@@ -47,11 +65,13 @@ public class ResumableUploadHandler {
         }
         raf.close();
 
-
+        BoundSetOperations<String, ResumableChunkNumber> boundSetOperations = redisTemplate.boundSetOps(info.resumableFilename);
+        boundSetOperations.expire(6, TimeUnit.HOURS);
         //Mark as uploaded.
-        info.uploadedChunks.add(new ResumableInfo.ResumableChunkNumber(resumableChunkNumber));
-        if (info.checkIfUploadFinished()) { //Check if all chunks uploaded, and change filename
-            ResumableInfoStorage.getInstance().remove(info);
+        boundSetOperations.add(new ResumableInfo.ResumableChunkNumber(resumableChunkNumber));
+        Set<ResumableChunkNumber> numbers = redisTemplate.boundSetOps(info.resumableFilename).members();
+        if (info.checkIfUploadFinished(numbers)) { //Check if all chunks uploaded, and change filename
+        	resumableInfoStorage.remove(info);
             response.getWriter().print("All finished.");
         } else {
             response.getWriter().print("Upload");
@@ -62,8 +82,8 @@ public class ResumableUploadHandler {
         int resumableChunkNumber        = getResumableChunkNumber(request);
 
         ResumableInfo info = getResumableInfo(request);
-
-        if (info.uploadedChunks.contains(new ResumableInfo.ResumableChunkNumber(resumableChunkNumber))) {
+        Set<ResumableChunkNumber> numbers = redisTemplate.boundSetOps(info.resumableFilename).members();
+        if (numbers.contains(new ResumableInfo.ResumableChunkNumber(resumableChunkNumber))) {
             response.getWriter().print("Uploaded."); //This Chunk has been Uploaded.
         } else {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -86,12 +106,11 @@ public class ResumableUploadHandler {
         if(!uploadDirFile.exists()) uploadDirFile.mkdirs();
         String resumableFilePath        = new File(uploadDir, resumableFilename).getAbsolutePath() + ".temp";
 
-        ResumableInfoStorage storage = ResumableInfoStorage.getInstance();
 
-        ResumableInfo info = storage.get(resumableChunkSize, resumableTotalSize,
+        ResumableInfo info = resumableInfoStorage.get(resumableChunkSize, resumableTotalSize,
                 resumableIdentifier, resumableFilename, resumableRelativePath, resumableFilePath);
         if (!info.vaild())         {
-            storage.remove(info);
+        	resumableInfoStorage.remove(info);
             throw new ServletException("Invalid request params.");
         }
         return info;

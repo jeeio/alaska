@@ -1,26 +1,24 @@
 package io.jee.alaska.resumable.js;
 
-import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
+
+import javax.annotation.Resource;
+
+import org.springframework.data.redis.core.BoundValueOperations;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
 
 /**
  * by fanxu
  */
+@Component
 public class ResumableInfoStorage {
-
-    //Single instance
-    private ResumableInfoStorage() {
-    }
-    private static ResumableInfoStorage sInstance;
-
-    public static synchronized ResumableInfoStorage getInstance() {
-        if (sInstance == null) {
-            sInstance = new ResumableInfoStorage();
-        }
-        return sInstance;
-    }
+	
+	@Resource
+	private RedisTemplate<String, ResumableInfo> redisTemplate;
 
     //resumableIdentifier --  ResumableInfo
-    private HashMap<String, ResumableInfo> mMap = new HashMap<String, ResumableInfo>();
+//    private HashMap<String, ResumableInfo> mMap = new HashMap<String, ResumableInfo>();
 
     /**
      * Get ResumableInfo from mMap or Create a new one.
@@ -35,9 +33,7 @@ public class ResumableInfoStorage {
     public synchronized ResumableInfo get(int resumableChunkSize, long resumableTotalSize,
                              String resumableIdentifier, String resumableFilename,
                              String resumableRelativePath, String resumableFilePath) {
-
-        ResumableInfo info = mMap.get(resumableIdentifier);
-
+        ResumableInfo info = redisTemplate.boundValueOps(resumableIdentifier).get();
         if (info == null) {
             info = new ResumableInfo();
 
@@ -48,9 +44,11 @@ public class ResumableInfoStorage {
             info.resumableRelativePath  = resumableRelativePath;
             info.resumableFilePath      = resumableFilePath;
 
-            mMap.put(resumableIdentifier, info);
+            BoundValueOperations<String, ResumableInfo> operations = redisTemplate.boundValueOps(resumableIdentifier);
+            operations.set(info);
+            operations.expire(6, TimeUnit.HOURS);
         }
-        return info;
+        return redisTemplate.boundValueOps(resumableIdentifier).get();
     }
 
     /**
@@ -58,6 +56,6 @@ public class ResumableInfoStorage {
      * @param info
      */
     public void remove(ResumableInfo info) {
-       mMap.remove(info.resumableIdentifier);
+    	redisTemplate.opsForValue().getOperations().delete(info.resumableIdentifier);
     }
 }
