@@ -22,7 +22,7 @@ public class ResumableUploadHandler {
 		this.uploadDir = uploadDir;
 	}
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int resumableChunkNumber        = getResumableChunkNumber(request);
 
         ResumableInfo info = getResumableInfo(request);
@@ -36,7 +36,7 @@ public class ResumableUploadHandler {
         InputStream is = request.getInputStream();
         long readed = 0;
         long content_length = request.getContentLength();
-        byte[] bytes = new byte[1024 * 100];
+        byte[] bytes = new byte[1024 * 128];
         while(readed < content_length) {
             int r = is.read(bytes);
             if (r < 0)  {
@@ -58,7 +58,7 @@ public class ResumableUploadHandler {
         }
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int resumableChunkNumber        = getResumableChunkNumber(request);
 
         ResumableInfo info = getResumableInfo(request);

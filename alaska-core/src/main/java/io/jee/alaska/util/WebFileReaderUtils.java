@@ -19,7 +19,7 @@ import org.springframework.web.context.request.WebRequest;
 
 public class WebFileReaderUtils {
 	
-	private static final int BUFFER_LENGTH = 1024 * 4;
+	private static final int BUFFER_LENGTH = 1024 * 64;
 	private static final long EXPIRE_TIME = 1000 * 60 * 60 * 24;
 	private static final Pattern RANGE_PATTERN = Pattern.compile("bytes=(?<start>\\d*)-(?<end>\\d*)");
 	
