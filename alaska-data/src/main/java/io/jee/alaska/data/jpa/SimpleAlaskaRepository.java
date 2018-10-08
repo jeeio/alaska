@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
@@ -67,8 +69,23 @@ public class SimpleAlaskaRepository<T, ID extends Serializable> extends SimpleJp
 		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage());
 		}
-		save(t);
-		return null;
+		return save(t);
+	}
+	
+	@Override
+	public T update(ID id, Map<String, Object> keyVal) {
+		T t = findById(id).get();
+		Set<Entry<String, Object>> entrys = keyVal.entrySet();
+		for (Entry<String, Object> entry : entrys) {
+			try {
+				PropertyDescriptor descriptor = new PropertyDescriptor(entry.getKey(), domainClass);
+				Method set = descriptor.getWriteMethod();
+				set.invoke(t, entry.getValue());
+			} catch (Exception e) {
+				throw new RuntimeException(e.getMessage());
+			}
+		}
+		return save(t);
 	}
 
 	@Override

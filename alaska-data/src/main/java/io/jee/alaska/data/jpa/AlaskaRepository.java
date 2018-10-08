@@ -26,6 +26,8 @@ public interface AlaskaRepository<T, ID extends Serializable> extends JpaReposit
 	
 	T update(ID id, String key, Object value);
 	
+	T update(ID id, Map<String, Object> keyVal);
+	
 	Select<T> select();
 	
 	Select<T> select(boolean cacheable);
