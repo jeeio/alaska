@@ -73,6 +73,7 @@ public class SimpleAlaskaRepository<T, ID extends Serializable> extends SimpleJp
 	}
 	
 	@Override
+	@Transactional
 	public T update(ID id, Map<String, Object> keyVal) {
 		T t = findById(id).get();
 		Set<Entry<String, Object>> entrys = keyVal.entrySet();
