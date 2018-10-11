@@ -1,6 +1,5 @@
 package io.jee.alaska.util;
 
-import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
@@ -63,7 +62,7 @@ public class WebFileReaderUtils {
 	    ByteBuffer buffer = ByteBuffer.allocate(BUFFER_LENGTH);
 
 	    SeekableByteChannel input = Files.newByteChannel(path, StandardOpenOption.READ);
-	    BufferedOutputStream output = new BufferedOutputStream(response.getOutputStream());
+	    OutputStream output = response.getOutputStream();
 	    try {
 
 	    	input.position(start);
@@ -130,7 +129,7 @@ public class WebFileReaderUtils {
 	    ByteBuffer buffer = ByteBuffer.allocate(BUFFER_LENGTH);
 
 	    SeekableByteChannel input = Files.newByteChannel(path, StandardOpenOption.READ);
-	    BufferedOutputStream output = new BufferedOutputStream(response.getOutputStream());
+	    OutputStream output = response.getOutputStream();
 	    try {
 
 	    	input.position(start);
