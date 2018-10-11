@@ -20,7 +20,7 @@ import org.springframework.web.context.request.WebRequest;
 public class WebFileReaderUtils {
 	
 	private static final int BUFFER_LENGTH = 1024 * 64;
-	private static final long EXPIRE_TIME = 1000 * 60 * 60 * 24;
+	private static final long EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;
 	private static final Pattern RANGE_PATTERN = Pattern.compile("bytes=(?<start>\\d*)-(?<end>\\d*)");
 	
 	public static void partial(Path path, WebRequest request, HttpServletResponse response) throws IOException {
@@ -153,6 +153,7 @@ public class WebFileReaderUtils {
 		
 		response.reset();
 	    response.setBufferSize(BUFFER_LENGTH);
+	    response.setHeader("Cathe-Control", "public, max-age=" + (EXPIRE_TIME/1000));
 	    response.setDateHeader("Last-Modified", Files.getLastModifiedTime(path).toMillis());
 	    response.setDateHeader("Expires", System.currentTimeMillis() + EXPIRE_TIME);
 //	    response.setContentType(Files.probeContentType(path));
