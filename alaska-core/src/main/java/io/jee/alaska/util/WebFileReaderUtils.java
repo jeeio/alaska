@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.activation.MimetypesFileTypeMap;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.util.StringUtils;
@@ -23,7 +24,7 @@ public class WebFileReaderUtils {
 	private static final long EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;
 	private static final Pattern RANGE_PATTERN = Pattern.compile("bytes=(?<start>\\d*)-(?<end>\\d*)");
 	
-	public static void partial(Path path, WebRequest request, HttpServletResponse response) throws IOException {
+	public static long partial(Path path, HttpServletRequest request, HttpServletResponse response) throws IOException {
 	    long length = Files.size(path);
 	    long start = 0;
 	    long end = length - 1;
@@ -59,6 +60,7 @@ public class WebFileReaderUtils {
 
 	    int bytesRead;
 	    long bytesLeft = contentLength;
+	    long bytesWrite = 0;
 	    ByteBuffer buffer = ByteBuffer.allocate(BUFFER_LENGTH);
 
 	    SeekableByteChannel input = Files.newByteChannel(path, StandardOpenOption.READ);
@@ -71,6 +73,7 @@ public class WebFileReaderUtils {
 		        buffer.clear();
 		        output.write(buffer.array(), 0, bytesLeft < bytesRead ? (int) bytesLeft : bytesRead);
 		        bytesLeft -= bytesRead;
+		        bytesWrite += bytesRead;
 	    	}
 //			while ((bytesRead = input.read(buffer)) != -1) {
 //				buffer.clear();
@@ -81,9 +84,10 @@ public class WebFileReaderUtils {
 			input.close();
 			output.close();
 		}
+	    return bytesWrite;
 	}
 	
-	public static void partialDownload(Path path, String name, WebRequest request, HttpServletResponse response) throws IOException {
+	public static long partialDownload(Path path, String name, HttpServletRequest request, HttpServletResponse response) throws IOException {
 	    long length = Files.size(path);
 	    long start = 0;
 	    long end = length - 1;
@@ -126,6 +130,7 @@ public class WebFileReaderUtils {
 
 	    int bytesRead;
 	    long bytesLeft = contentLength;
+	    long bytesWrite = 0;
 	    ByteBuffer buffer = ByteBuffer.allocate(BUFFER_LENGTH);
 
 	    SeekableByteChannel input = Files.newByteChannel(path, StandardOpenOption.READ);
@@ -138,12 +143,14 @@ public class WebFileReaderUtils {
 		        buffer.clear();
 		        output.write(buffer.array(), 0, bytesLeft < bytesRead ? (int) bytesLeft : bytesRead);
 		        bytesLeft -= bytesRead;
+		        bytesWrite += bytesRead;
 		    }
 	    }catch (IOException e) {
 		}finally {
 			input.close();
 			output.close();
 		}
+	    return bytesWrite;
 	}
 	
 	public static void checkNotModified(Path path, WebRequest request, HttpServletResponse response) throws IOException {

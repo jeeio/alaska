@@ -62,6 +62,9 @@ public class SimpleAlaskaRepository<T, ID extends Serializable> extends SimpleJp
 	@Transactional
 	public T update(ID id, String key, Object value) {
 		T t = findById(id).get();
+		if(t==null) {
+			return null;
+		}
 		try {
 			PropertyDescriptor descriptor = new PropertyDescriptor(key, domainClass);
 			Method set = descriptor.getWriteMethod();
@@ -76,6 +79,9 @@ public class SimpleAlaskaRepository<T, ID extends Serializable> extends SimpleJp
 	@Transactional
 	public T update(ID id, Map<String, Object> keyVal) {
 		T t = findById(id).get();
+		if(t==null) {
+			return null;
+		}
 		Set<Entry<String, Object>> entrys = keyVal.entrySet();
 		for (Entry<String, Object> entry : entrys) {
 			try {
