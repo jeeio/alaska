@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class AlaskaSecurityProperties {
 
 	private String eurekaUsername, eurekaPassword;
-	private String localUsername, localPassword;
+	private String configUsername, configPassword;
 	private Map<String, String> service;
 
 	public String getEurekaUsername() {
@@ -27,20 +27,20 @@ public class AlaskaSecurityProperties {
 		this.eurekaPassword = eurekaPassword;
 	}
 
-	public String getLocalUsername() {
-		return localUsername;
+	public String getConfigUsername() {
+		return configUsername;
 	}
 
-	public void setLocalUsername(String localUsername) {
-		this.localUsername = localUsername;
+	public void setConfigUsername(String configUsername) {
+		this.configUsername = configUsername;
 	}
 
-	public String getLocalPassword() {
-		return localPassword;
+	public String getConfigPassword() {
+		return configPassword;
 	}
 
-	public void setLocalPassword(String localPassword) {
-		this.localPassword = localPassword;
+	public void setConfigPassword(String configPassword) {
+		this.configPassword = configPassword;
 	}
 
 	public Map<String, String> getService() {
