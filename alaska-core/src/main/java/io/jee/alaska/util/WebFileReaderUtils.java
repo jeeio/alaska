@@ -1,5 +1,6 @@
 package io.jee.alaska.util;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
@@ -15,12 +16,13 @@ import javax.activation.MimetypesFileTypeMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.WebRequest;
 
 public class WebFileReaderUtils {
 	
-	private static final int BUFFER_LENGTH = 1024 * 64;
+	private static final int BUFFER_LENGTH = 1024 * 32;
 	private static final long EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;
 	private static final Pattern RANGE_PATTERN = Pattern.compile("bytes=(?<start>\\d*)-(?<end>\\d*)");
 	
@@ -167,21 +169,7 @@ public class WebFileReaderUtils {
 	    response.setContentType(new MimetypesFileTypeMap().getContentType(path.toFile()));
 	    response.setContentLengthLong(Files.size(path));
 
-	    int bytesRead;
-	    ByteBuffer buffer = ByteBuffer.allocate(BUFFER_LENGTH);
-
-	    SeekableByteChannel input = Files.newByteChannel(path, StandardOpenOption.READ);
-		OutputStream output = response.getOutputStream();
-	    try {
-			while ((bytesRead = input.read(buffer)) != -1) {
-				buffer.clear();
-				output.write(buffer.array(), 0, bytesRead);
-			}
-	    }catch (IOException e) {
-		}finally {
-			input.close();
-			output.close();
-		}
+	    FileCopyUtils.copy(new FileInputStream(path.toFile()), response.getOutputStream());
 	}
 
 }
