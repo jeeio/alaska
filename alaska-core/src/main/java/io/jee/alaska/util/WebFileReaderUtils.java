@@ -2,10 +2,11 @@ package io.jee.alaska.util;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
 import java.nio.channels.SeekableByteChannel;
+import java.nio.channels.WritableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -48,7 +49,6 @@ public class WebFileReaderUtils {
 	    long contentLength = end - start + 1;
 	    
 	    response.reset();
-	    response.setBufferSize(BUFFER_LENGTH);
 	    response.setHeader("Accept-Ranges", "bytes");
 	    response.setDateHeader("Last-Modified", Files.getLastModifiedTime(path).toMillis());
 	    response.setDateHeader("Expires", System.currentTimeMillis() + EXPIRE_TIME);
@@ -63,17 +63,21 @@ public class WebFileReaderUtils {
 	    int bytesRead;
 	    long bytesLeft = contentLength;
 	    long bytesWrite = 0;
-	    ByteBuffer buffer = ByteBuffer.allocate(BUFFER_LENGTH);
+	    ByteBuffer buffer = ByteBuffer.allocateDirect(BUFFER_LENGTH);
 
 	    SeekableByteChannel input = Files.newByteChannel(path, StandardOpenOption.READ);
-	    OutputStream output = response.getOutputStream();
+	    WritableByteChannel output = Channels.newChannel(response.getOutputStream());
 	    try {
 
 	    	input.position(start);
-
+	    	
 	    	while ((bytesRead = input.read(buffer)) != -1 && bytesLeft > 0) {
-	    		buffer.clear();
-		        output.write(buffer.array(), 0, bytesLeft < bytesRead ? (int) bytesLeft : bytesRead);
+	    		if(bytesLeft < bytesRead) {
+		    		buffer.position((int) bytesLeft);
+		    	}
+	    		buffer.flip();
+		        output.write(buffer);
+		        buffer.clear();
 		        bytesLeft -= bytesRead;
 		        bytesWrite += bytesRead;
 	    	}
@@ -111,7 +115,6 @@ public class WebFileReaderUtils {
 	    long contentLength = end - start + 1;
 
 	    response.reset();
-	    response.setBufferSize(BUFFER_LENGTH);
 		String userAgent = request.getHeader("User-Agent").toLowerCase();
 		if (userAgent.indexOf("firefox") > -1) {
 			name = new String(name.getBytes("UTF-8"), "iso-8859-1");
@@ -133,20 +136,24 @@ public class WebFileReaderUtils {
 	    int bytesRead;
 	    long bytesLeft = contentLength;
 	    long bytesWrite = 0;
-	    ByteBuffer buffer = ByteBuffer.allocate(BUFFER_LENGTH);
+	    ByteBuffer buffer = ByteBuffer.allocateDirect(BUFFER_LENGTH);
 
 	    SeekableByteChannel input = Files.newByteChannel(path, StandardOpenOption.READ);
-	    OutputStream output = response.getOutputStream();
+	    WritableByteChannel output = Channels.newChannel(response.getOutputStream());
 	    try {
 
 	    	input.position(start);
 
 	    	while ((bytesRead = input.read(buffer)) != -1 && bytesLeft > 0) {
-	    		buffer.clear();
-		        output.write(buffer.array(), 0, bytesLeft < bytesRead ? (int) bytesLeft : bytesRead);
+	    		if(bytesLeft < bytesRead) {
+		    		buffer.position((int) bytesLeft);
+		    	}
+	    		buffer.flip();
+		        output.write(buffer);
+		        buffer.clear();
 		        bytesLeft -= bytesRead;
 		        bytesWrite += bytesRead;
-		    }
+	    	}
 	    }catch (IOException e) {
 		}finally {
 			input.close();
@@ -161,7 +168,6 @@ public class WebFileReaderUtils {
 		}
 		
 		response.reset();
-	    response.setBufferSize(BUFFER_LENGTH);
 	    response.setHeader("Cathe-Control", "public, max-age=" + (EXPIRE_TIME/1000));
 	    response.setDateHeader("Last-Modified", Files.getLastModifiedTime(path).toMillis());
 	    response.setDateHeader("Expires", System.currentTimeMillis() + EXPIRE_TIME);
